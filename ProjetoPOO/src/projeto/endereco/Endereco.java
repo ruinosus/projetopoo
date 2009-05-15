@@ -58,8 +58,8 @@ public class Endereco {
 	  * 
 	  * @return codigo do endereco
 	  */
-	public String getCodigo() {
-		return logradouro;
+	public int getCodigo() {
+		return codigo;
 	}
   /**
    * Seta o valor do atributo codigo 
