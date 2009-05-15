@@ -30,7 +30,8 @@ public class Endereco {
 	}
 	
 	/**
-	  * Cria um objeto Endereco com a rua o numero o bairro o cep e a cidade.
+	  * Cria um objeto Endereco com o codigo  o logradouro o numero o complemento
+	  * o bairro o cep a cidade e o pais.
 	  * 
 	  * @param codigo - codigo do endereco
 	  * @param logradouro - logradouro do endereco
@@ -38,11 +39,12 @@ public class Endereco {
 	  * @param complemento - complemento do endereco
 	  * @param bairro - bairro do endereco
 	  * @param cep - cep do endereco
-	  * @param cidade - cidade do endereco
+      * @param cidade - cidade do endereco
+	  * @param uf - uf do endereco
 	  * @param pais - pais do endereco
 	  */
 	public Endereco(int codigo,String logradouro, String numero,String complemento, String bairro, String cep,
-			String cidade, String pais) {
+			String uf,String cidade, String pais) {
 		super();
 		this.codigo = codigo;
 		this.logradouro = logradouro;
@@ -51,6 +53,7 @@ public class Endereco {
 		this.bairro = bairro;
 		this.cep = cep;
 		this.cidade = cidade;
+		this.uf = uf;
 		this.pais = pais;
 	}
 	/**
