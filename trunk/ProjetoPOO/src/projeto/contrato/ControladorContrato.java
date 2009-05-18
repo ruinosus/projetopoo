@@ -39,7 +39,7 @@ public class ControladorContrato {
 		this.repContratos.remover(codigo);
 	}
 	
-	public void atualizar(Contrato contrato)throws ExcecaoNegocio {
+	public void alterar(Contrato contrato)throws ExcecaoNegocio {
 		this.consultar(contrato.getCodigo());
 		this.repContratos.alterar(contrato);
 	}
