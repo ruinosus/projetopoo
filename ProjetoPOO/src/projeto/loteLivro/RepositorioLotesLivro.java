@@ -19,13 +19,6 @@ public class RepositorioLotesLivro implements IRepositorioLotesLivro {
 	}
 
 	
-	public ArrayList<LoteLivro> consultarNome(String nome)
-			throws ExcecaoNegocio {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 	public void inserir(LoteLivro loteLivro) throws ExcecaoNegocio {
 		// TODO Auto-generated method stub
 
