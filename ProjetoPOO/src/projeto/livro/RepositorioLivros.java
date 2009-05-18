@@ -9,13 +9,13 @@ public class RepositorioLivros implements IRepositorioLivros{
 	}
 
 	
-	public Livro consultar(String isbn) {
+	public Livro consultar(int isbn) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
-	public boolean existe(String isbn) {
+	public boolean existe(int isbn) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -27,7 +27,7 @@ public class RepositorioLivros implements IRepositorioLivros{
 	}
 
 	
-	public void remover(String isbn) {
+	public void remover(int isbn) {
 		// TODO Auto-generated method stub
 		
 	}

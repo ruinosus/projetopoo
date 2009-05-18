@@ -8,7 +8,7 @@ import sun.util.calendar.BaseCalendar.Date;
 
 public class Livro {
 	
-	private String isbn;
+	private int isbn;
 	private String titulo;
 	private Editora editora;
 	private Date dataPublicacao;
@@ -16,10 +16,10 @@ public class Livro {
 	private String estilo;
 	private String descricao;	
 	
-	public String getIsbn() {
+	public int getIsbn() {
 		return isbn;
 	}
-	public void setIsbn(String isbn) {
+	public void setIsbn(int isbn) {
 		this.isbn = isbn;
 	}
 	public String getTitulo() {
@@ -60,7 +60,7 @@ public class Livro {
 		this.descricao = descricao;
 	}
 	
-	public Livro(String isbn, String titulo, Editora editora, Date data, ArrayList<Autor> autor, String estilo, String descricao){
+	public Livro(int isbn, String titulo, Editora editora, Date data, ArrayList<Autor> autor, String estilo, String descricao){
 		
 		this.isbn = isbn;
 		this.titulo = titulo;

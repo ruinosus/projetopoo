@@ -18,11 +18,11 @@ public class ControladorLivros {
 		}
 		 }
 	
-	public Livro consultar(String isbn) {
+	public Livro consultar(int isbn) {
 		return replivros.consultar(isbn);
 	}
 	
-	public void remover(String isbn)throws ExcecaoNegocio{
+	public void remover(int isbn)throws ExcecaoNegocio{
 		if(this.replivros.existe(isbn)) {
 			replivros.remover(isbn);
 		}else{

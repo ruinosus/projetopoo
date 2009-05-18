@@ -4,12 +4,12 @@ public interface IRepositorioLivros {
 	
 	public void inserir(Livro novoLivro);
 	
-	public Livro consultar(String isbn);
+	public Livro consultar(int isbn);
 	
 	public void atualizar(Livro novoLivro);
 	
-	public void remover(String isbn);
+	public void remover(int isbn);
 	
-	public boolean existe(String isbn);
+	public boolean existe(int isbn);
 
 }
