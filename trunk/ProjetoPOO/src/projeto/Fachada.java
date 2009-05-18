@@ -41,7 +41,7 @@ public class Fachada {
 	  }
 	  
       public void alterarContrato(Contrato contrato) throws ExcecaoNegocio{
-		  this.controladorContrato.atualizar(contrato);
+		  this.controladorContrato.alterar(contrato);
 	  }
       
       public ArrayList<Contrato> consultarContrato(String nome)throws ExcecaoNegocio{
