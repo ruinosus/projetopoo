@@ -1,15 +1,15 @@
 package projeto.autor;
 
-public interface IRepositorioAutores {
-	
-	public void inserir(Autor novoAutor);
-	
-	public Autor consultar(String id);
-	
-	public void atualizar(Autor novoAutor);
-	
-	public void remover(String id);
-	
-	public boolean existe(String id);
+import java.util.ArrayList;
+
+import projeto.excecao.ExcecaoNegocio;
+
+public interface IRepositorioAutores {	
+	public void inserir(Autor novoAutor) throws ExcecaoNegocio;	
+	public Autor consultarCodigo(int identidade) throws ExcecaoNegocio;
+	public ArrayList<Autor> consultarNome(String nome) throws ExcecaoNegocio;	
+	public void atualizar(Autor novoAutor) throws ExcecaoNegocio;	
+	public void remover(int identidade) throws ExcecaoNegocio;
+	public boolean existe(int identidade) throws ExcecaoNegocio;	
 
 }

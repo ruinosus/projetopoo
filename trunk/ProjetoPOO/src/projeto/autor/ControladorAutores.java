@@ -1,38 +1,52 @@
 package projeto.autor;
 
+import java.util.ArrayList;
+
 import projeto.excecao.ExcecaoNegocio;
 
 
 public class ControladorAutores {
 	
-	private IRepositorioAutores repautores;
+	private IRepositorioAutores repAutores;
 	
-	public ControladorAutores(IRepositorioAutores repautores) {
-		this.repautores = repautores;
+	public ControladorAutores(IRepositorioAutores repAutores) {
+		this.repAutores = repAutores;
 	}
 	
-	public void cadastrar(Autor novoAutor)throws ExcecaoNegocio {
-		if(!repautores.existe(novoAutor.getIdentidade())){
-			repautores.inserir(novoAutor);
+	public void cadastrar(Autor novoAutor)throws ExcecaoNegocio {	
+		if(!repAutores.existe(novoAutor.getIdentidade())){
+			repAutores.inserir(novoAutor);	
 		}else{
-			throw new ExcecaoNegocio ("Erro: Autor ja Existe no Sistema.");
+			throw new ExcecaoNegocio("Autor já cadastrado");
+		}				
+	}
+	
+	public Autor consultarCodigo(int identidade) throws ExcecaoNegocio {
+		Autor autor = repAutores.consultarCodigo(identidade);
+		if(autor==null){
+			throw new ExcecaoNegocio("Nenhum autor encontrado");
 		}
-		 }
-	
-	public Autor consultar(String id) {
-		return repautores.consultar(id);
+		return autor;
 	}
 	
-	public void remover(String id)throws ExcecaoNegocio{
-		if(this.repautores.existe(id)) {
-			repautores.remover(id);
+	public ArrayList<Autor> consultarNome(String nome) throws ExcecaoNegocio {
+		return repAutores.consultarNome(nome);
+	}
+	
+	public void remover(int identidade)throws ExcecaoNegocio{	
+		if (this.repAutores.existe(identidade)) {
+			repAutores.remover(identidade);
 		}else{
-			throw new ExcecaoNegocio("Erro: Autor informado não existe no cadastro de Autores.");
-		  }
+			throw new ExcecaoNegocio("Nenhum autor encontrado");
+		}
 	}
 	
-	public void atualizar(Autor autor) {
-		repautores.atualizar(autor);
+	public void atualizar(Autor autor) throws ExcecaoNegocio {		
+		if (this.repAutores.existe(autor.getIdentidade())) {
+			repAutores.atualizar(autor);
+		}else{
+			throw new ExcecaoNegocio("Nenhum autor encontrado");
+		}
 	}
 
 }

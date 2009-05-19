@@ -6,13 +6,9 @@ import sun.util.calendar.BaseCalendar.Date;
 
 public class Autor {
 	
+	private int identidade;
 	private String nome;
-	private String identidade;
-	private Endereco endereco;
-	private Date dataNascimento;
-	private String nacionalidade;
-	private String descricao;
-	
+	private Endereco endereco;	
 	
 	public String getNome() {
 		return nome;
@@ -20,10 +16,10 @@ public class Autor {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getIdentidade() {
+	public int getIdentidade() {
 		return identidade;
 	}
-	public void setIdentidade(String identidade) {
+	public void setIdentidade(int identidade) {
 		this.identidade = identidade;
 	}
 	public Endereco getEndereco() {
@@ -32,34 +28,19 @@ public class Autor {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	public Date getDataNascimento() {
-		return dataNascimento;
+	
+	public Autor(int identidade, String nome, Endereco endereco) {
+		super();
+		this.identidade = identidade;
+		this.nome = nome;
+		this.endereco = endereco;
 	}
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-	public String getNacionalidade() {
-		return nacionalidade;
-	}
-	public void setNacionalidade(String nacionalidade) {
-		this.nacionalidade = nacionalidade;
-	}
-	public String getDescricao() {
-		return descricao;
-	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	
+	public Autor() {
+		super();
 	}
 
-	public Autor(String nome, String identidade, Endereco endereco, Date data, String nacionalidade, String descricao){
-		
-		this.nome = nome;
-		this.identidade = identidade;
-		this.endereco = endereco;
-		this.dataNascimento = data;
-		this.nacionalidade = nacionalidade;
-		this.descricao = descricao;
-	}
+
 	
 	
 }
