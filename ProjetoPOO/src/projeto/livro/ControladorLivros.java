@@ -18,7 +18,7 @@ public class ControladorLivros {
 		}
 		 }
 	
-	public Livro consultar(int isbn) {
+	public Livro consultar(int isbn) throws ExcecaoNegocio {
 		return replivros.consultar(isbn);
 	}
 	
@@ -30,7 +30,7 @@ public class ControladorLivros {
 		  }
 	}
 
-	public void atualizar(Livro livros) {
+	public void atualizar(Livro livros) throws ExcecaoNegocio {
 		replivros.atualizar(livros);
 	}
 

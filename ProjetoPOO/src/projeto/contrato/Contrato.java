@@ -34,4 +34,8 @@ public class Contrato {
 		super();
 	}
 	
+	public String toString(){
+		return this.nome;
+	}
+	
 }

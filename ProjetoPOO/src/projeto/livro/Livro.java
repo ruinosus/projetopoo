@@ -71,6 +71,13 @@ public class Livro {
 		this.descricao = descricao;
 		
 	}
+	public Livro(){
+	
+	}
+	
+	public String toString(){
+		return this.titulo;
+	}
 	
 
 }

@@ -1,6 +1,6 @@
 package projeto.grafica;
 
-public abstract class Grafica {
+public class Grafica {
 	
 	private int codigo;
 	private String nome;
@@ -31,5 +31,12 @@ public abstract class Grafica {
 		this.nome = nome;
 	}
 
+	public Grafica(){
+		
+	}
+	
+	public String toString(){
+		return this.nome;
+	}
 	
 }

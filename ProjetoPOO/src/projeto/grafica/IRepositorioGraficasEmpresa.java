@@ -10,4 +10,5 @@ public interface IRepositorioGraficasEmpresa {
 	public void remover(int numIdentificacao)throws ExcecaoNegocio;
 	public GraficaEmpresa consultarCodigo(int num_identificacao)throws ExcecaoNegocio;
 	public ArrayList<GraficaEmpresa> consultarNome(String nome) throws ExcecaoNegocio;
+	public ArrayList<GraficaEmpresa> consultarTodos() throws ExcecaoNegocio;
 }

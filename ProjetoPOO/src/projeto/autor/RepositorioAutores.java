@@ -1,18 +1,12 @@
 package projeto.autor;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import projeto.contrato.Contrato;
 import projeto.endereco.Endereco;
 import projeto.excecao.ExcecaoNegocio;
-import projeto.grafica.Grafica;
-import projeto.livro.Livro;
-import projeto.loteLivro.LoteLivro;
 import projeto.util.UtilBD;
 
 public class RepositorioAutores implements IRepositorioAutores{
@@ -103,7 +97,7 @@ public class RepositorioAutores implements IRepositorioAutores{
 		try {			
 			PreparedStatement comando = conexao.prepareStatement(QUERY_DELETE);
 			comando.setInt(1, identidade);
-			int linhasAlteradas = comando.executeUpdate();			
+			comando.executeUpdate();			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ExcecaoNegocio(e.getMessage());
