@@ -101,7 +101,7 @@ public class RepositorioContratos implements IRepositorioContratos {
 		try {			
 			PreparedStatement comando = conexao.prepareStatement(QUERY_DELETE);
 			comando.setInt(1, codigo);
-			int linhasAlteradas = comando.executeUpdate();			
+			comando.executeUpdate();			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ExcecaoNegocio(e.getMessage());

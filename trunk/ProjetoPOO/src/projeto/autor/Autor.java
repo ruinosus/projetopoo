@@ -1,8 +1,6 @@
 package projeto.autor;
 
 import projeto.endereco.Endereco;
-import sun.util.calendar.BaseCalendar.Date;
-
 
 public class Autor {
 	

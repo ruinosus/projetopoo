@@ -38,4 +38,10 @@ public class RepositorioGraficasEmpresa implements IRepositorioGraficasEmpresa {
 		
 	}
 
+
+	public ArrayList<GraficaEmpresa> consultarTodos() throws ExcecaoNegocio {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
