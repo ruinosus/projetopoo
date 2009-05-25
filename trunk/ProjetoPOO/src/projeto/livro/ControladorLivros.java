@@ -1,5 +1,7 @@
 package projeto.livro;
 
+import java.util.ArrayList;
+
 import projeto.autor.Autor;
 import projeto.autor.ControladorAutores;
 import projeto.autor.IRepositorioAutores;
@@ -33,6 +35,27 @@ public class ControladorLivros {
 	
 	public Livro consultar(int isbn) throws ExcecaoNegocio {
 		return repLivros.consultar(isbn);
+	}
+	public ArrayList<Livro> consultar(String titulo) throws ExcecaoNegocio {
+		ArrayList<Livro> livros = repLivros.consultar(titulo);
+		
+		for(int i = 0; i< livros.size(); i++){
+			Livro livro = livros.get(i);		
+			livros.set(i, this.montarLivro(livro)); 
+		}
+	
+		return livros;
+	}
+	
+	public ArrayList<Livro> consultar() throws ExcecaoNegocio {
+		ArrayList<Livro> livros = repLivros.consultar();
+		
+		for(int i = 0; i< livros.size(); i++){
+			Livro livro = livros.get(i);		
+			livros.set(i, this.montarLivro(livro)); 
+		}
+	
+		return livros;
 	}
 	
 	public void remover(int isbn)throws ExcecaoNegocio{
