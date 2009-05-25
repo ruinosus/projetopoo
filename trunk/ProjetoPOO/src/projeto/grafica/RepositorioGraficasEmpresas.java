@@ -12,7 +12,7 @@ import projeto.util.UtilBD;
 public class RepositorioGraficasEmpresas implements IRepositorioGraficasEmpresas {
 
 	private static final String QUERY_INSERT = "INSERT INTO GRAFICA (NOME) VALUES (?)";
-	private static final String QUERY_UPDATE = "UPDATE GRAFICA SET (NOME = ?) WHERE COD_GRAFICA = ?";
+	private static final String QUERY_UPDATE = "UPDATE GRAFICA SET NOME = ? WHERE COD_GRAFICA = ?";
 	private static final String QUERY_SELECT_CODIGO = "SELECT COD_GRAFICA,NOME FROM GRAFICA WHERE COD_GRAFICA = ?";
 	private static final String QUERY_ULTIMO_CODIGO = "SELECT MAX(COD_GRAFICA) MAXCOD FROM GRAFICA";	
 	private static final String QUERY_SELECT_NOME = "SELECT COD_GRAFICA,NOME FROM GRAFICA WHERE NOME LIKE ?" ;

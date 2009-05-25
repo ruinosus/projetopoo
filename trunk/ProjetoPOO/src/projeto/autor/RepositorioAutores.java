@@ -12,7 +12,7 @@ import projeto.util.UtilBD;
 public class RepositorioAutores implements IRepositorioAutores{
 
 	private static final String QUERY_INSERT = "INSERT INTO AUTOR (COD_AUTOR,COD_ENDERECO,NOME) VALUES (?,?,?)";
-	private static final String QUERY_UPDATE = "UPDATE AUTOR SET (COD_ENDERECO = ?, NOME = ?) WHERE COD_AUTOR = ?";
+	private static final String QUERY_UPDATE = "UPDATE AUTOR SET COD_ENDERECO = ?, NOME = ? WHERE COD_AUTOR = ?";
 	private static final String QUERY_SELECT_CODIGO = "SELECT COD_AUTOR,COD_ENDERECO,NOME FROM AUTOR WHERE COD_AUTOR = ?";
 	private static final String QUERY_SELECT_NOME = "SELECT COD_AUTOR,COD_ENDERECO,NOME FROM AUTOR WHERE NOME LIKE ?" ;
 	private static final String QUERY_DELETE = "DELETE FROM AUTOR WHERE COD_AUTOR = ?";
