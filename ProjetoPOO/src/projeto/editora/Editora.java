@@ -42,6 +42,9 @@ public class Editora {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+	public String toString(){
+		return this.nome;
+	}
 	
 
 }
