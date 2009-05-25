@@ -29,11 +29,12 @@ public class ControladorAutores {
 	}
 	
 	public Autor consultar(int identidade) throws ExcecaoNegocio {
-		Autor autor = repAutores.consultar(identidade);
-		Endereco endereco = contEnderecos.consultar(autor.getEndereco().getCodigo());		
-		autor.setEndereco(endereco);
-		
-		if(autor==null){
+		Autor autor;
+		if (this.repAutores.existe(identidade)) {	
+			autor = repAutores.consultar(identidade);
+			Endereco endereco = contEnderecos.consultar(autor.getEndereco().getCodigo());		
+			autor.setEndereco(endereco);			
+		}else{
 			throw new ExcecaoNegocio("Nenhum autor encontrado");
 		}
 		return autor;
@@ -73,6 +74,8 @@ public class ControladorAutores {
 	
 	public void alterar(Autor autor) throws ExcecaoNegocio {		
 		if (this.repAutores.existe(autor.getIdentidade())) {
+			Autor a = this.consultar(autor.getIdentidade());
+			autor.getEndereco().setCodigo(a.getEndereco().getCodigo());
 			contEnderecos.alterar(autor.getEndereco());
 			repAutores.alterar(autor);
 		}else{

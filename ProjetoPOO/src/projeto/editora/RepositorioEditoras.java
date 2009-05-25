@@ -13,7 +13,7 @@ import projeto.util.UtilBD;
 public class RepositorioEditoras implements IRepositorioEditoras {
 
 	private static final String QUERY_INSERT = "INSERT INTO EDITORA (COD_ENDERECO,NOME) VALUES (?,?)";
-	private static final String QUERY_UPDATE = "UPDATE EDITORA SET (COD_ENDERECO = ?, NOME = ?) WHERE COD_EDITORA = ?";
+	private static final String QUERY_UPDATE = "UPDATE EDITORA SET COD_ENDERECO = ?, NOME = ? WHERE COD_EDITORA = ?";
 	private static final String QUERY_SELECT_CODIGO = "SELECT COD_EDITORA,COD_ENDERECO,NOME FROM EDITORA WHERE COD_EDITORA = ?";
 	private static final String QUERY_SELECT_NOME = "SELECT COD_EDITORA,COD_ENDERECO,NOME FROM EDITORA WHERE NOME LIKE ?" ;
 	private static final String QUERY_DELETE = "DELETE FROM EDITORA WHERE COD_EDITORA = ?";

@@ -12,7 +12,7 @@ import projeto.util.UtilBD;
 public class RepositorioEnderecos implements IRepositorioEnderecos {
 
 	private static final String QUERY_INSERT = "INSERT INTO ENDERECO (LOGRADOURO,BAIRRO,COMPLEMENTO,CEP,NUMERO,UF,CIDADE,PAIS) VALUES (?,?,?,?,?,?,?,?)";
-	private static final String QUERY_UPDATE = "UPDATE ENDERECO SET (LOGRADOURO = ?, BAIRRO = ?, COMPLEMENTO = ?, CEP = ?, NUMERO = ?, UF = ?, CIDADE = ?, PAIS = ?) WHERE COD_ENDERECO = ?";
+	private static final String QUERY_UPDATE = "UPDATE ENDERECO SET LOGRADOURO=?, BAIRRO=?, COMPLEMENTO=?, CEP=?, NUMERO=?, UF=?, CIDADE=?, PAIS=? WHERE COD_ENDERECO=?";
 	private static final String QUERY_SELECT_CODIGO = "SELECT COD_ENDERECO,LOGRADOURO,BAIRRO,COMPLEMENTO,CEP,NUMERO,UF,CIDADE,PAIS FROM ENDERECO WHERE COD_ENDERECO = ?";
 	private static final String QUERY_ULTIMO_CODIGO = "SELECT MAX(COD_ENDERECO) MAXCOD FROM ENDERECO";	
 	private static final String QUERY_DELETE = "DELETE FROM ENDERECO WHERE COD_ENDERECO = ?";
@@ -114,7 +114,7 @@ public class RepositorioEnderecos implements IRepositorioEnderecos {
 		String cidade = rs.getString("CIDADE");
 		String pais = rs.getString("PAIS");
 		
-		return new Endereco(codEndereco,logradouro,numero,complemento,bairro,cep,cidade,uf,pais);
+		return new Endereco(codEndereco,logradouro,numero,complemento,bairro,cep,uf,cidade,pais);
 	}	
 	
 	 @SuppressWarnings({ "finally", "unused" })

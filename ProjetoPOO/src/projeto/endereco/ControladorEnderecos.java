@@ -19,10 +19,10 @@ private IRepositorioEnderecos repEnderecos;
 	}
 	
 	public Endereco consultar(int codigo)throws ExcecaoNegocio {
-		Endereco contrato = repEnderecos.consultar(codigo);
-		if(contrato == null)
+		Endereco endereco = repEnderecos.consultar(codigo);
+		if(endereco == null)
 			throw new ExcecaoNegocio("Endereço não existente.");
-		return contrato;
+		return endereco;
 	}	
 
 	
