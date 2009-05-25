@@ -347,7 +347,7 @@ public class JFrmCadAutor extends javax.swing.JFrame {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "O Campo Identidade devem conter um valor inteiro.");
+			JOptionPane.showMessageDialog(null, "O Campo Identidade deve conter um valor inteiro.");
 			e.printStackTrace();
 		}
 	}

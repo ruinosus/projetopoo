@@ -37,6 +37,9 @@ public class Autor {
 	public Autor() {
 		super();
 	}
+	public String toString(){
+		return this.nome;
+	}
 
 
 	

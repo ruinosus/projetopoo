@@ -25,12 +25,13 @@ public class ControladorEditoras {
 	
 	public Editora consultar(int codigo) throws ExcecaoNegocio {
 		Editora editora = repEditoras.consultar(codigo);
-		Endereco endereco = contEnderecos.consultar(editora.getEndereco().getCodigo());		
-		editora.setEndereco(endereco);
-		
 		if(editora==null){
 			throw new ExcecaoNegocio("Nenhuma editora encontrada");
 		}
+		Endereco endereco = contEnderecos.consultar(editora.getEndereco().getCodigo());		
+		editora.setEndereco(endereco);
+		
+		
 		return editora;
 	}
 	
@@ -63,9 +64,10 @@ public class ControladorEditoras {
 	}
 	
 	public void alterar(Editora editora) throws ExcecaoNegocio {
+		Editora e = this.consultar(editora.getCodigo());
+		editora.getEndereco().setCodigo(e.getEndereco().getCodigo());
 		contEnderecos.alterar(editora.getEndereco());
 		repEditoras.alterar(editora);
-		
 	}
 
 }

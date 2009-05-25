@@ -28,6 +28,13 @@ public class ControladorLivros {
 	public void inserir(Livro livro)throws ExcecaoNegocio {
 		if(!repLivros.existe(livro.getIsbn())){
 			 repLivros.inserir(livro);
+			 if(livro.getAutor().size() > 0){
+				 for(int i=0; i <livro.getAutor().size(); i++ ){
+					 int identidade = livro.getAutor().get(i).getIdentidade();
+					 int isbn = livro.getIsbn();
+					 this.repLivros.inserirLivroAutor(isbn, identidade);
+				 }
+			 }
 		}else{
 			throw new ExcecaoNegocio ("Erro: Livro ja Existe no Sistema.");
 		}
