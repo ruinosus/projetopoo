@@ -10,7 +10,7 @@ import projeto.grafica.Grafica;
 import projeto.livro.Livro;
 import projeto.util.UtilBD;
 
-public class RepositorioLotesLivro implements IRepositorioLotesLivro {
+public class RepositorioLotesLivros implements IRepositorioLotesLivros {
 
 	private static final String QUERY_INSERT = "INSERT INTO IMPRESSAO (COD_GRAFICA,COD_LIVRO,NUMERO_COPIAS,DATA_ENTREGA) VALUES (?,?,?,?)";
 	private static final String QUERY_UPDATE = "UPDATE IMPRESSAO SET (COD_GRAFICA=?,COD_LIVRO=?,NUMERO_COPIAS=?,DATA_ENTREGA=?) WHERE COD_IMPRESSAO = ?";
@@ -41,7 +41,7 @@ public class RepositorioLotesLivro implements IRepositorioLotesLivro {
 
 	
 	@SuppressWarnings("finally")
-	public LoteLivro consultarCodigo(int codigo) throws ExcecaoNegocio {
+	public LoteLivro consultar(int codigo) throws ExcecaoNegocio {
 		LoteLivro loteLivro = null;
 		Connection conexao = UtilBD.obterConexao();
 		try {			

@@ -5,30 +5,30 @@ import java.util.ArrayList;
 import projeto.excecao.ExcecaoNegocio;
 
 
-public class ControladorContrato {
+public class ControladorContratos {
 	
 	private IRepositorioContratos repContratos;
 	
-	public ControladorContrato(IRepositorioContratos repContratos) {
+	public ControladorContratos(IRepositorioContratos repContratos) {
 		this.repContratos = repContratos;
 	}
 	
-	public void cadastrar(Contrato contrato)throws ExcecaoNegocio {
+	public Contrato inserir(Contrato contrato)throws ExcecaoNegocio {
 		if(contrato != null)
-			this.repContratos.inserir(contrato);
+			return this.repContratos.inserir(contrato);
 		else
 			throw new ExcecaoNegocio("Valor inválido");
 	}
 	
 	public Contrato consultar(int codigo)throws ExcecaoNegocio {
-		Contrato contrato = repContratos.consultarCodigo(codigo);
+		Contrato contrato = repContratos.consultar(codigo);
 		if(contrato == null)
 			throw new ExcecaoNegocio("Contrato não existente.");
 		return contrato;
 	}
 	
 	public ArrayList<Contrato> consultar(String nome)throws ExcecaoNegocio {
-		ArrayList<Contrato> contratos = repContratos.consultarNome(nome);
+		ArrayList<Contrato> contratos = repContratos.consultar(nome);
 		if(contratos.isEmpty())
 			throw new ExcecaoNegocio("Contrato não existente.");
 		return contratos;

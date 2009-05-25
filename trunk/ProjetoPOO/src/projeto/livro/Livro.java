@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import projeto.autor.Autor;
 import projeto.editora.Editora;
 
-import sun.util.calendar.BaseCalendar.Date;
+import java.util.Date;
 
 public class Livro {
 	
@@ -13,8 +13,6 @@ public class Livro {
 	private Editora editora;
 	private Date dataPublicacao;
 	private ArrayList<Autor> autor;
-	private String estilo;
-	private String descricao;	
 	
 	public int getIsbn() {
 		return isbn;
@@ -47,29 +45,15 @@ public class Livro {
 	public void setAutor(ArrayList<Autor> autor) {
 		this.autor = autor;
 	}
-	public String getEstilo() {
-		return estilo;
-	}
-	public void setEstilo(String estilo) {
-		this.estilo = estilo;
-	}
-	public String getDescricao() {
-		return descricao;
-	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+
 	
-	public Livro(int isbn, String titulo, Editora editora, Date data, ArrayList<Autor> autor, String estilo, String descricao){
+	public Livro(int isbn, String titulo, Editora editora, Date data, ArrayList<Autor> autor){
 		
 		this.isbn = isbn;
 		this.titulo = titulo;
 		this.editora = editora;
 		this.dataPublicacao = data;
-		this.autor = autor;
-		this.estilo = estilo;
-		this.descricao = descricao;
-		
+		this.autor = autor;		
 	}
 	public Livro(){
 	

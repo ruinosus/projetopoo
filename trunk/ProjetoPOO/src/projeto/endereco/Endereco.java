@@ -31,7 +31,7 @@ public class Endereco {
 	
 	/**
 	  * Cria um objeto Endereco com o codigo  o logradouro o numero o complemento
-	  * o bairro o cep a cidade e o pais.
+	  * o bairro o cep a cidade a uf e o pais.
 	  * 
 	  * @param codigo - codigo do endereco
 	  * @param logradouro - logradouro do endereco

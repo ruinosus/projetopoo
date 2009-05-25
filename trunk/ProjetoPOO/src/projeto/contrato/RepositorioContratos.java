@@ -15,7 +15,7 @@ public class RepositorioContratos implements IRepositorioContratos {
 	private static final String QUERY_INSERT = "INSERT INTO CONTRATO (NOME_RESPONSAVEL,VALOR) VALUES (?,?)";
 	private static final String QUERY_UPDATE = "UPDATE CONTRATO SET (NOME_RESPONSAVEL = ?, VALOR = ?) WHERE COD_CONTRATO = ?";
 	private static final String QUERY_SELECT_CODIGO = "SELECT COD_CONTRADO,NOME_RESPONSAVEL,VALOR FROM CONTRATO WHERE COD_CONTRATO = ?";
-	//private static final String QUERY_MAXIMO_CODIGO = "SELECT MAX(COD_CONTRATO) MAXCOD FROM CONTRATO";
+	private static final String QUERY_ULTIMO_CODIGO = "SELECT MAX(COD_CONTRADO) MAXCOD FROM CONTRATO";	
 	private static final String QUERY_SELECT_NOME = "SELECT COD_CONTRADO,NOME_RESPONSAVEL,VALOR FROM CONTRATO WHERE NOME_RESPONSAVEL LIKE ?" ;
 	private static final String QUERY_DELETE = "DELETE FROM CONTRATO WHERE COD_CONTRATO = ?";
 		
@@ -39,7 +39,7 @@ public class RepositorioContratos implements IRepositorioContratos {
 	}
 
 	@SuppressWarnings("finally")
-	public Contrato consultarCodigo(int codigo) throws ExcecaoNegocio {
+	public Contrato consultar(int codigo) throws ExcecaoNegocio {
 		Contrato contrato = null;
 		Connection conexao = UtilBD.obterConexao();
 		try {			
@@ -59,7 +59,7 @@ public class RepositorioContratos implements IRepositorioContratos {
 	}
 
 	@SuppressWarnings("finally")
-	public ArrayList<Contrato> consultarNome(String nome) throws ExcecaoNegocio {
+	public ArrayList<Contrato> consultar(String nome) throws ExcecaoNegocio {
 		ArrayList<Contrato>  contratos = new ArrayList<Contrato> ();
 		Connection conexao = UtilBD.obterConexao();
 		try {			
@@ -78,19 +78,23 @@ public class RepositorioContratos implements IRepositorioContratos {
 	}
 
 	
-	public void inserir(Contrato contrato) throws ExcecaoNegocio {
+	@SuppressWarnings("finally")
+	public Contrato inserir(Contrato contrato) throws ExcecaoNegocio {
 		Connection conexao = UtilBD.obterConexao();
+		Contrato resultado = null;
 		try {			
 			PreparedStatement comando = conexao.prepareStatement(QUERY_INSERT); 
 			comando.setString(1, contrato.getNome());
 			comando.setDouble(2, contrato.getValor());
 			comando.executeUpdate();
 			System.out.println("Inserção com Sucesso!");
+			resultado = this.consultar(this.obterUltimoCodigo());
 			
 		} catch (SQLException e1) {
 			throw new ExcecaoNegocio(e1.getMessage());
 		}finally{
 			UtilBD.fecharConexao(conexao);
+			return resultado;
 		}
 
 	}
@@ -118,5 +122,24 @@ public class RepositorioContratos implements IRepositorioContratos {
 		
 		return new Contrato(codContrato, nome, valor);
 	}
+	
+	 @SuppressWarnings({ "finally", "unused" })
+		private int obterUltimoCodigo() throws ExcecaoNegocio{
+			int codRetorno = 0;
+			Connection conexao = UtilBD.obterConexao();
+			try {
+				PreparedStatement comando = conexao.prepareStatement(QUERY_ULTIMO_CODIGO);
+				ResultSet linhas = comando.executeQuery();
+				if (linhas.next()){
+					codRetorno = linhas.getInt("MAXCOD");
+				} 
+			} catch (SQLException e) {
+				throw new ExcecaoNegocio(e.getMessage());
+			} finally{
+				UtilBD.fecharConexao(conexao);
+				return codRetorno;
+			}
+					
+		}
 
 }

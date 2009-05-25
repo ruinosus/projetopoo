@@ -4,14 +4,14 @@ package projeto.endereco;
 
 import projeto.excecao.ExcecaoNegocio;
 
-public class ControladorEndereco {
+public class ControladorEnderecos {
 private IRepositorioEnderecos repEnderecos;
 	
-	public ControladorEndereco(IRepositorioEnderecos repEnderecos) {
+	public ControladorEnderecos(IRepositorioEnderecos repEnderecos) {
 		this.repEnderecos = repEnderecos;
 	}
 	
-	public Endereco cadastrar(Endereco endereco)throws ExcecaoNegocio {
+	public Endereco inserir(Endereco endereco)throws ExcecaoNegocio {
 		if(endereco != null)
 			return this.repEnderecos.inserir(endereco);
 		else
@@ -19,7 +19,7 @@ private IRepositorioEnderecos repEnderecos;
 	}
 	
 	public Endereco consultar(int codigo)throws ExcecaoNegocio {
-		Endereco contrato = repEnderecos.consultarCodigo(codigo);
+		Endereco contrato = repEnderecos.consultar(codigo);
 		if(contrato == null)
 			throw new ExcecaoNegocio("Endereço não existente.");
 		return contrato;
