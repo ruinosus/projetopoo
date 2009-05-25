@@ -18,7 +18,7 @@ public class ControladorEditoras {
 		this.contEnderecos = new ControladorEnderecos(repEnderecos);
 	}
 	
-	public void cadastrar(Editora editora)throws ExcecaoNegocio {		
+	public void inserir(Editora editora)throws ExcecaoNegocio {		
 		editora.setEndereco(contEnderecos.inserir(editora.getEndereco()));
 		repEditoras.inserir(editora);		
 	}
