@@ -16,7 +16,7 @@ public class Teste {
 		
 		
 		try {
-			f.cadastrarContrato(c);
+			f.inserirContrato(c);
 		} catch (ExcecaoNegocio e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

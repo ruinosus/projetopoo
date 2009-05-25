@@ -1,6 +1,8 @@
 package projeto.autor;
 
 import java.util.ArrayList;
+
+import projeto.endereco.ControladorEnderecos;
 import projeto.endereco.Endereco;
 import projeto.endereco.IRepositorioEnderecos;
 import projeto.excecao.ExcecaoNegocio;
@@ -10,25 +12,25 @@ import projeto.excecao.ExcecaoNegocio;
 public class ControladorAutores {
 	
 	private IRepositorioAutores repAutores;
-	private IRepositorioEnderecos repEnderecos;
+	private ControladorEnderecos contEnderecos;
 	
 	public ControladorAutores(IRepositorioAutores repAutores,IRepositorioEnderecos repEnderecos) {
 		this.repAutores = repAutores;
-		this.repEnderecos = repEnderecos; 
+		this.contEnderecos = new ControladorEnderecos(repEnderecos);
 	}
 	
-	public void cadastrar(Autor novoAutor)throws ExcecaoNegocio {	
-		if(!repAutores.existe(novoAutor.getIdentidade())){
-			novoAutor.setEndereco(repEnderecos.inserir(novoAutor.getEndereco()));
-			repAutores.inserir(novoAutor);	
+	public void inserir(Autor autor)throws ExcecaoNegocio {	
+		if(!repAutores.existe(autor.getIdentidade())){
+			autor.setEndereco(contEnderecos.inserir(autor.getEndereco()));
+			repAutores.inserir(autor);	
 		}else{
 			throw new ExcecaoNegocio("Autor já cadastrado");
 		}				
 	}
 	
-	public Autor consultarCodigo(int identidade) throws ExcecaoNegocio {
-		Autor autor = repAutores.consultarCodigo(identidade);
-		Endereco endereco = repEnderecos.consultarCodigo(autor.getEndereco().getCodigo());		
+	public Autor consultar(int identidade) throws ExcecaoNegocio {
+		Autor autor = repAutores.consultar(identidade);
+		Endereco endereco = contEnderecos.consultar(autor.getEndereco().getCodigo());		
 		autor.setEndereco(endereco);
 		
 		if(autor==null){
@@ -37,11 +39,22 @@ public class ControladorAutores {
 		return autor;
 	}
 	
-	public ArrayList<Autor> consultarNome(String nome) throws ExcecaoNegocio {
-		ArrayList<Autor> autores = repAutores.consultarNome(nome);
+	public ArrayList<Autor> consultar() throws ExcecaoNegocio {
+		ArrayList<Autor> autores = repAutores.consultar();
 		
 		for(int i = 0; i< autores.size(); i++){
-			Endereco endereco = repEnderecos.consultarCodigo(autores.get(i).getEndereco().getCodigo());		
+			Endereco endereco = contEnderecos.consultar(autores.get(i).getEndereco().getCodigo());		
+    		autores.get(i).setEndereco(endereco); 
+		}
+	
+		return autores;
+	}
+	
+	public ArrayList<Autor> consultar(String nome) throws ExcecaoNegocio {
+		ArrayList<Autor> autores = repAutores.consultar(nome);
+		
+		for(int i = 0; i< autores.size(); i++){
+			Endereco endereco = contEnderecos.consultar(autores.get(i).getEndereco().getCodigo());		
     		autores.get(i).setEndereco(endereco); 
 		}
 	
@@ -50,18 +63,18 @@ public class ControladorAutores {
 	
 	public void remover(int identidade)throws ExcecaoNegocio{			
 		if (this.repAutores.existe(identidade)) {		
-			repAutores.remover(identidade);
-			Autor autor = repAutores.consultarCodigo(identidade);
-			repEnderecos.remover(autor.getEndereco().getCodigo());
+			Autor autor = repAutores.consultar(identidade);
+			repAutores.remover(identidade);			
+			contEnderecos.remover(autor.getEndereco().getCodigo());
 		}else{
 			throw new ExcecaoNegocio("Nenhum autor encontrado");
 		}
 	}
 	
-	public void atualizar(Autor autor) throws ExcecaoNegocio {		
+	public void alterar(Autor autor) throws ExcecaoNegocio {		
 		if (this.repAutores.existe(autor.getIdentidade())) {
-			repEnderecos.alterar(autor.getEndereco());
-			repAutores.atualizar(autor);
+			contEnderecos.alterar(autor.getEndereco());
+			repAutores.alterar(autor);
 		}else{
 			throw new ExcecaoNegocio("Nenhum autor encontrado");
 		}

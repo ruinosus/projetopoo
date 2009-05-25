@@ -8,12 +8,12 @@ public class GraficaTerceirizada extends Grafica {
 	private Endereco endereco;
 	private Contrato contrato;
 	
-	public GraficaTerceirizada(int numIdentificacao, String nome, Endereco endereco, Contrato contrato) {
-		super(numIdentificacao, nome);
+	public GraficaTerceirizada(int codigo, String nome, Endereco endereco, Contrato contrato) {
+		super(codigo, nome);
 	
 		this.contrato = contrato;
 		this.endereco = endereco;
-	}
+	}	
 	
 	public Endereco getEndereco() {
 		return endereco;

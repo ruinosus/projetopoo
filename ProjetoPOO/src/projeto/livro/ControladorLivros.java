@@ -1,37 +1,62 @@
 package projeto.livro;
 
+import projeto.autor.Autor;
+import projeto.autor.ControladorAutores;
+import projeto.autor.IRepositorioAutores;
+import projeto.editora.ControladorEditoras;
+import projeto.editora.IRepositorioEditoras;
+import projeto.endereco.IRepositorioEnderecos;
 import projeto.excecao.ExcecaoNegocio;
 
 public class ControladorLivros {
 	
-	private IRepositorioLivros replivros;
+	private IRepositorioLivros repLivros;
+	private ControladorAutores contAutores;
+	private ControladorEditoras contEditoras;	
 	
-	public ControladorLivros(IRepositorioLivros replivros) {
-		this.replivros = replivros;
+	public ControladorLivros(IRepositorioLivros replivros,
+			IRepositorioAutores repAutores,
+			IRepositorioEditoras repEditoras,
+			IRepositorioEnderecos repEnderecos) {
+		this.repLivros = replivros;
+		this.contAutores = new ControladorAutores(repAutores,repEnderecos) ;
+		this.contEditoras = new ControladorEditoras(repEditoras,repEnderecos) ;;
 	}
 	
-	public void cadastrar(Livro novoLivro)throws ExcecaoNegocio {
-		if(!replivros.existe(novoLivro.getIsbn())){
-			 replivros.inserir(novoLivro);
+	public void inserir(Livro livro)throws ExcecaoNegocio {
+		if(!repLivros.existe(livro.getIsbn())){
+			 repLivros.inserir(livro);
 		}else{
 			throw new ExcecaoNegocio ("Erro: Livro ja Existe no Sistema.");
 		}
-		 }
+	}
 	
 	public Livro consultar(int isbn) throws ExcecaoNegocio {
-		return replivros.consultar(isbn);
+		return repLivros.consultar(isbn);
 	}
 	
 	public void remover(int isbn)throws ExcecaoNegocio{
-		if(this.replivros.existe(isbn)) {
-			replivros.remover(isbn);
+		if(this.repLivros.existe(isbn)) {
+			repLivros.remover(isbn);
 		}else{
 			throw new ExcecaoNegocio("Erro: Livro informado não existe no cadastro de Livros.");
 		  }
 	}
 
-	public void atualizar(Livro livros) throws ExcecaoNegocio {
-		replivros.atualizar(livros);
+	public void alterar(Livro livros) throws ExcecaoNegocio {
+		repLivros.alterar(livros);
+	}
+	
+	@SuppressWarnings("unused")
+	private Livro montarLivro(Livro livro) throws ExcecaoNegocio{
+		
+		for (int i = 0; i < livro.getAutor().size(); i++) {
+			int identidade = livro.getAutor().get(i).getIdentidade();
+			Autor autor = this.contAutores.consultar(identidade);
+			livro.getAutor().set(i, autor);				
+		}
+		livro.setEditora(this.contEditoras.consultar(livro.getEditora().getCodigo()));
+		return livro;
 	}
 
 }

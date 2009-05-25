@@ -14,18 +14,18 @@ public class RepositorioAutores implements IRepositorioAutores{
 	private static final String QUERY_INSERT = "INSERT INTO AUTOR (COD_AUTOR,COD_ENDERECO,NOME) VALUES (?,?,?)";
 	private static final String QUERY_UPDATE = "UPDATE AUTOR SET (COD_ENDERECO = ?, NOME = ?) WHERE COD_AUTOR = ?";
 	private static final String QUERY_SELECT_CODIGO = "SELECT COD_AUTOR,COD_ENDERECO,NOME FROM AUTOR WHERE COD_AUTOR = ?";
-	//private static final String QUERY_MAXIMO_CODIGO = "SELECT MAX(COD_CONTRATO) MAXCOD FROM CONTRATO";
 	private static final String QUERY_SELECT_NOME = "SELECT COD_AUTOR,COD_ENDERECO,NOME FROM AUTOR WHERE NOME LIKE ?" ;
 	private static final String QUERY_DELETE = "DELETE FROM AUTOR WHERE COD_AUTOR = ?";
+	private static final String QUERY_SELECT_ALL = "SELECT COD_AUTOR,COD_ENDERECO,NOME FROM AUTOR" ;
 	
 	
-	public void atualizar(Autor novoAutor) throws ExcecaoNegocio {
+	public void alterar(Autor autor) throws ExcecaoNegocio {
 		Connection conexao = UtilBD.obterConexao();
 		try {			
 			PreparedStatement comando = conexao.prepareStatement(QUERY_UPDATE); 			
-			comando.setInt(1, novoAutor.getEndereco().getCodigo());
-			comando.setString(2, novoAutor.getNome());
-			comando.setInt(3, novoAutor.getIdentidade());
+			comando.setInt(1, autor.getEndereco().getCodigo());
+			comando.setString(2, autor.getNome());
+			comando.setInt(3, autor.getIdentidade());
 			comando.executeUpdate();
 			System.out.println("Alteração com Sucesso!");
 			
@@ -37,7 +37,7 @@ public class RepositorioAutores implements IRepositorioAutores{
 	}
 
 	@SuppressWarnings("finally")
-	public Autor consultarCodigo(int identidade) throws ExcecaoNegocio {
+	public Autor consultar(int identidade) throws ExcecaoNegocio {
 		Autor autor = null;
 		Connection conexao = UtilBD.obterConexao();
 		try {			
@@ -56,7 +56,7 @@ public class RepositorioAutores implements IRepositorioAutores{
 	}
 
 	@SuppressWarnings("finally")
-	public ArrayList<Autor> consultarNome(String nome) throws ExcecaoNegocio {
+	public ArrayList<Autor> consultar(String nome) throws ExcecaoNegocio {
 		ArrayList<Autor>  autores = new ArrayList<Autor> ();
 		Connection conexao = UtilBD.obterConexao();
 		try {			
@@ -74,13 +74,13 @@ public class RepositorioAutores implements IRepositorioAutores{
 		}
 	}
 
-	public void inserir(Autor novoAutor) throws ExcecaoNegocio {
+	public void inserir(Autor autor) throws ExcecaoNegocio {
 		Connection conexao = UtilBD.obterConexao();
 		try {			
 			PreparedStatement comando = conexao.prepareStatement(QUERY_INSERT); 
-			comando.setInt(1, novoAutor.getIdentidade());		
-			comando.setInt(2, novoAutor.getEndereco().getCodigo());
-			comando.setString(3, novoAutor.getNome());
+			comando.setInt(1, autor.getIdentidade());		
+			comando.setInt(2, autor.getEndereco().getCodigo());
+			comando.setString(3, autor.getNome());
 			comando.executeUpdate();
 			System.out.println("Inserção com Sucesso!");
 			
@@ -120,11 +120,29 @@ public class RepositorioAutores implements IRepositorioAutores{
 	public boolean existe(int identidade) throws ExcecaoNegocio {
 		boolean resultado = false;
 		
-		if(this.consultarCodigo(identidade)!= null){
+		if(this.consultar(identidade)!= null){
 			resultado = true;
 		}
 		
 		return resultado;
+	}
+
+	@SuppressWarnings("finally")
+	public ArrayList<Autor> consultar() throws ExcecaoNegocio {
+		ArrayList<Autor>  autores = new ArrayList<Autor> ();
+		Connection conexao = UtilBD.obterConexao();
+		try {			
+			PreparedStatement comando = conexao.prepareStatement(QUERY_SELECT_ALL);
+			ResultSet rs = comando.executeQuery();
+			while(rs.next()){
+				autores.add(this.criarAutor(rs));
+			}
+		}catch (SQLException e){
+			throw new ExcecaoNegocio(e.getMessage());
+		} finally{
+			UtilBD.fecharConexao(conexao);
+			return autores;
+		}
 	}
 	
 	

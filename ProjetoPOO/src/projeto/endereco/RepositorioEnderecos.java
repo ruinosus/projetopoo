@@ -42,7 +42,7 @@ public class RepositorioEnderecos implements IRepositorioEnderecos {
 	}
 
 	@SuppressWarnings("finally")
-	public Endereco consultarCodigo(int codigo) throws ExcecaoNegocio {
+	public Endereco consultar(int codigo) throws ExcecaoNegocio {
 		
 		Endereco endereco = null;
 		Connection conexao = UtilBD.obterConexao();
@@ -76,8 +76,9 @@ public class RepositorioEnderecos implements IRepositorioEnderecos {
 			comando.setString(7, endereco.getCidade());
 			comando.setString(8, endereco.getPais());
 			comando.executeUpdate();
-			resultado = this.consultarCodigo(this.obterUltimoCodigo());
 			System.out.println("Inserção com Sucesso!");
+			resultado = this.consultar(this.obterUltimoCodigo());
+			
 			
 		} catch (SQLException e1) {
 			throw new ExcecaoNegocio(e1.getMessage());
@@ -116,7 +117,7 @@ public class RepositorioEnderecos implements IRepositorioEnderecos {
 		return new Endereco(codEndereco,logradouro,numero,complemento,bairro,cep,cidade,uf,pais);
 	}	
 	
-	 @SuppressWarnings("finally")
+	 @SuppressWarnings({ "finally", "unused" })
 	private int obterUltimoCodigo() throws ExcecaoNegocio{
 		int codRetorno = 0;
 		Connection conexao = UtilBD.obterConexao();

@@ -15,9 +15,9 @@ public class RepositorioEditoras implements IRepositorioEditoras {
 	private static final String QUERY_INSERT = "INSERT INTO EDITORA (COD_ENDERECO,NOME) VALUES (?,?)";
 	private static final String QUERY_UPDATE = "UPDATE EDITORA SET (COD_ENDERECO = ?, NOME = ?) WHERE COD_EDITORA = ?";
 	private static final String QUERY_SELECT_CODIGO = "SELECT COD_EDITORA,COD_ENDERECO,NOME FROM EDITORA WHERE COD_EDITORA = ?";
-	//private static final String QUERY_MAXIMO_CODIGO = "SELECT MAX(COD_CONTRATO) MAXCOD FROM CONTRATO";
 	private static final String QUERY_SELECT_NOME = "SELECT COD_EDITORA,COD_ENDERECO,NOME FROM EDITORA WHERE NOME LIKE ?" ;
 	private static final String QUERY_DELETE = "DELETE FROM EDITORA WHERE COD_EDITORA = ?";
+	private static final String QUERY_SELECT_ALL = "SELECT COD_EDITORA,COD_ENDERECO,NOME FROM EDITORA" ;
 	
 	public void alterar(Editora editora) throws ExcecaoNegocio {
 		Connection conexao = UtilBD.obterConexao();
@@ -39,7 +39,7 @@ public class RepositorioEditoras implements IRepositorioEditoras {
 
 	
 	@SuppressWarnings("finally")
-	public Editora consultarCodigo(int codigo) throws ExcecaoNegocio {
+	public Editora consultar(int codigo) throws ExcecaoNegocio {
 		Editora editora = null;
 		Connection conexao = UtilBD.obterConexao();
 		try {			
@@ -59,7 +59,7 @@ public class RepositorioEditoras implements IRepositorioEditoras {
 
 	
 	@SuppressWarnings("finally")
-	public ArrayList<Editora> consultarNome(String nome) throws ExcecaoNegocio {
+	public ArrayList<Editora> consultar(String nome) throws ExcecaoNegocio {
 		ArrayList<Editora>  editoras = new ArrayList<Editora> ();
 		Connection conexao = UtilBD.obterConexao();
 		try {			
@@ -119,6 +119,25 @@ public class RepositorioEditoras implements IRepositorioEditoras {
 		endereco.setCodigo(codEndereco);	
 		
 		return new Editora(codEditora,nome,endereco);
+	}
+
+
+	@SuppressWarnings("finally")
+	public ArrayList<Editora> consultar() throws ExcecaoNegocio {
+		ArrayList<Editora>  editoras = new ArrayList<Editora> ();
+		Connection conexao = UtilBD.obterConexao();
+		try {			
+			PreparedStatement comando = conexao.prepareStatement(QUERY_SELECT_ALL);
+			ResultSet rs = comando.executeQuery();
+			while(rs.next()){
+				editoras.add(this.criarEditora(rs));
+			}
+		}catch (SQLException e){
+			throw new ExcecaoNegocio(e.getMessage());
+		} finally{
+			UtilBD.fecharConexao(conexao);
+			return editoras;
+		}
 	}
 	
 

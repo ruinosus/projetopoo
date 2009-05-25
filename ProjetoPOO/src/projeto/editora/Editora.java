@@ -14,6 +14,10 @@ public class Editora {
 		this.nome = nome;
 		this.endereco = endereco;
 	}
+	public Editora() {
+		super();
+
+	}
 
 	public int getCodigo() {
 		return codigo;
