@@ -1,5 +1,7 @@
 package projeto.grafica;
 
+
+
 public class Grafica {
 	
 	private int codigo;
@@ -37,6 +39,18 @@ public class Grafica {
 	
 	public String toString(){
 		return this.nome;
+	}
+	
+	public boolean equals(Object o){
+		boolean resultado = false;
+		if (o instanceof Grafica){
+			Grafica g = (Grafica)o;
+			if(g.getCodigo()== this.getCodigo()){
+				resultado = true;
+			}
+		}
+		
+		return resultado;
 	}
 	
 }

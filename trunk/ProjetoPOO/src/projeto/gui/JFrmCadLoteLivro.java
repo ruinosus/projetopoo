@@ -1,19 +1,30 @@
 package projeto.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
-import projeto.contrato.Contrato;
+import projeto.Fachada;
+import projeto.autor.Autor;
+import projeto.editora.Editora;
+import projeto.excecao.ExcecaoNegocio;
+import projeto.grafica.Grafica;
+import projeto.grafica.GraficaEmpresa;
+import projeto.grafica.GraficaTerceirizada;
+import projeto.livro.Livro;
+import projeto.loteLivro.LoteLivro;
+import projeto.util.Conversor;
 
 
 /**
@@ -44,12 +55,20 @@ public class JFrmCadLoteLivro extends javax.swing.JFrame {
 		}
 	}
 
-	private JComboBox jCmbLivros;
-	private JButton jButton1;
 	private JTextField jTxtDataEntrega;
 	private JTextField jTxtNumeroCopias;
+	private JLabel jLblGrafica;
+	private JButton jBtnRemover;
+	private JButton jBtnAlterar;
 	private JComboBox jCmbGraficas;
-	private JButton jButton2;
+	private JComboBox jCmbLivros;
+	private JButton jBtnInserir;
+	private JButton jBtnConsultar;
+	private JLabel jLblTipoGrafica;
+	private JLabel jLblDataEntrega;
+	private JLabel jLblNumeroCopias;
+	private JLabel jLblLivro;
+	private Fachada fachada = Fachada.obterInstancia();
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -67,6 +86,9 @@ public class JFrmCadLoteLivro extends javax.swing.JFrame {
 	public JFrmCadLoteLivro() {
 		super();
 		initGUI();
+		this.carregarLivros();
+		this.carregarGraficas();
+		this.mostrarGrafica();
 	}
 	
 	private void initGUI() {
@@ -74,123 +96,259 @@ public class JFrmCadLoteLivro extends javax.swing.JFrame {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
 			{
+				jTxtNumeroCopias = new JTextField();
+				getContentPane().add(jTxtNumeroCopias);
+				jTxtNumeroCopias.setBounds(129, 76, 194, 23);
+			}
+			{
+				jTxtDataEntrega = new JTextField();
+				getContentPane().add(jTxtDataEntrega);
+				jTxtDataEntrega.setBounds(129, 107, 194, 23);
+			}
+			{
+				jLblLivro = new JLabel();
+				getContentPane().add(jLblLivro);
+				jLblLivro.setText("Livro:");
+				jLblLivro.setBounds(12, 15, 29, 16);
+			}
+			{
+				jLblGrafica = new JLabel();
+				getContentPane().add(jLblGrafica);
+				jLblGrafica.setText("Gráfica:");
+				jLblGrafica.setBounds(12, 44, 46, 16);
+			}
+			{
+				jLblNumeroCopias = new JLabel();
+				getContentPane().add(jLblNumeroCopias);
+				jLblNumeroCopias.setText("Número de Copias:");
+				jLblNumeroCopias.setBounds(12, 79, 108, 16);
+			}
+			{
+				jLblDataEntrega = new JLabel();
+				getContentPane().add(jLblDataEntrega);
+				jLblDataEntrega.setText("Data de Entrega:");
+				jLblDataEntrega.setBounds(12, 110, 90, 16);
+			}
+			{
+				jLblTipoGrafica = new JLabel();
+				getContentPane().add(jLblTipoGrafica);
+				jLblTipoGrafica.setText("grafica");
+				jLblTipoGrafica.setBounds(272, 44, 108, 16);
+			}
+			{
+				jBtnConsultar = new JButton();
+				getContentPane().add(jBtnConsultar);
+				jBtnConsultar.setText("Consultar");
+				jBtnConsultar.setBounds(207, 153, 65, 20);
+				jBtnConsultar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnConsultarActionPerformed(evt);
+					}
+				});
+
+			}
+			{
+				jBtnRemover = new JButton();
+				getContentPane().add(jBtnRemover);
+				jBtnRemover.setText("Remover");
+				jBtnRemover.setBounds(142, 153, 60, 20);
+				jBtnRemover.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnRemoverActionPerformed(evt);
+					}
+				});
+
+			}
+			{
+				jBtnAlterar = new JButton();
+				getContentPane().add(jBtnAlterar);
+				jBtnAlterar.setText("Alterar");
+				jBtnAlterar.setBounds(77, 153, 60, 20);
+				jBtnAlterar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnAlterarActionPerformed(evt);
+					}
+				});
+
+			}
+			{
+				jBtnInserir = new JButton();
+				getContentPane().add(jBtnInserir);
+				jBtnInserir.setText("Inserir");
+				jBtnInserir.setBounds(12, 153, 60, 20);
+				jBtnInserir.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnInserirActionPerformed(evt);
+					}
+				});
+
+			}
+			{
 				ComboBoxModel jComboBox1Model = 
 					new DefaultComboBoxModel(
-							new String[] { "Item One", "Item Two" });
-				jComboBox1Model.setSelectedItem("");
+							new String[] {  });
 				jCmbLivros = new JComboBox();
 				getContentPane().add(jCmbLivros);
 				jCmbLivros.setModel(jComboBox1Model);
-				jCmbLivros.setBounds(24, 23, 194, 23);
-				jCmbLivros.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent evt) {
-						jCmbLivrosActionPerformed(evt);
-					}
-				});
+				jCmbLivros.setBounds(68, 12, 255, 23);
 			}
 			{
-				jButton1 = new JButton();
-				getContentPane().add(jButton1);
-				jButton1.setText("jButton1");
-				jButton1.setBounds(238, 74, 59, 23);
-				jButton1.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent evt) {
-						jButton1ActionPerformed(evt);
-					}
-				});
-			}
-			{
-				jButton2 = new JButton();
-				getContentPane().add(jButton2);
-				jButton2.setText("jButton2");
-				jButton2.setBounds(238, 137, 59, 23);
-				jButton2.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent evt) {
-						jButton2ActionPerformed(evt);
-					}
-				});
-			}
-			{
-				ComboBoxModel jComboBox1Model = 
+				ComboBoxModel jCmbGraficasModel = 
 					new DefaultComboBoxModel(
-							new String[] { "Item One", "Item Two" });
-				jComboBox1Model.setSelectedItem("");
+							new String[] {  });
 				jCmbGraficas = new JComboBox();
 				getContentPane().add(jCmbGraficas);
-				jCmbGraficas.setModel(jComboBox1Model);
-				jCmbGraficas.setBounds(24, 69, 194, 23);
+				jCmbGraficas.setModel(jCmbGraficasModel);
+				jCmbGraficas.setBounds(68, 41, 204, 23);
 				jCmbGraficas.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						jCmbGraficasActionPerformed(evt);
 					}
 				});
 			}
-			{
-				jTxtNumeroCopias = new JTextField();
-				getContentPane().add(jTxtNumeroCopias);
-				jTxtNumeroCopias.setBounds(24, 121, 194, 23);
-			}
-			{
-				jTxtDataEntrega = new JTextField();
-				getContentPane().add(jTxtDataEntrega);
-				jTxtDataEntrega.setBounds(24, 167, 194, 23);
-			}
 			pack();
-			setSize(400, 300);
+			
+			this.setSize(400, 221);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}	
 	
-	private void jButton1ActionPerformed(ActionEvent evt) {
-		Contrato c1 = new Contrato();
-		c1.setNome("Jeff");
-		c1.setCodigo(1);
-		
-		Contrato c2 = new Contrato();
-		c2.setNome("Bell");
-		c2.setCodigo(2);
-		
-		Contrato c3 = new Contrato();
-		c3.setNome("Pato");
-		c3.setCodigo(3);
-		
-		jCmbLivros.removeAllItems();
-		jCmbLivros.addItem(c1);
-		jCmbLivros.addItem(c2);
-		jCmbLivros.addItem(c3);
-		
-//		ArrayList<Contrato> array = new ArrayList<Contrato>();
-//		
-//		array.add(c1);
-//		array.add(c2);
-//		array.add(c3);
-//		jCmbLivros.addItem(array);
-/*
- * # private ListIterator it;  
-	# it = cid.getDao().getLista().listIterator();  
-	#        while(it.hasNext()){  
-	#             Cidade obj = (Cidade) it.next();  
-	#            cbCidade.addItem(obj.getNome());  
-	#        }
- * */
+	private void validacao() throws ExcecaoNegocio{		
+		if(jCmbLivros.getSelectedIndex()== - 1){
+			throw new ExcecaoNegocio("O Livro deve ser informado");
+		}
+		if(jCmbGraficas.getSelectedIndex()== - 1){
+			throw new ExcecaoNegocio("A Gráfica deve ser informada");
+		}
+		if(jTxtNumeroCopias.getText().trim().equals("")){
+			throw new ExcecaoNegocio("O Número de Copias deve ser informado");
+		}
+		if(jTxtDataEntrega.getText().trim().equals("")){
+			throw new ExcecaoNegocio("A data de entrega deve ser informada");
+		}
 	}
-	
-	private void jCmbLivrosActionPerformed(ActionEvent evt) {
-		if(jCmbLivros.getSelectedIndex()!=-1)
-			{Contrato c = (Contrato)jCmbLivros.getSelectedItem();  
-		 JOptionPane.showMessageDialog(null,"Código: " + c.getCodigo() + " - Nome: " + c.getNome()); 
+	private void carregarLivros(){
+		try {
+			jCmbLivros.removeAllItems();
+			ArrayList<Livro> livros =  fachada.consultarLivro();
+			
+			for (int i = 0; i < livros.size(); i++) {
+				jCmbLivros.addItem(livros.get(i));
 			}
+		} catch (ExcecaoNegocio e) {
+
+		}
+	}
+	private void carregarGraficas(){
+		try {
+			jCmbGraficas.removeAllItems();
+			ArrayList<Grafica> graficas =  fachada.consultarGrafica();
+			
+			for (int i = 0; i < graficas.size(); i++) {
+				jCmbGraficas.addItem(graficas.get(i));
+			}
+		} catch (ExcecaoNegocio e) {
+
+		}
 	}
 	
-	private void jButton2ActionPerformed(ActionEvent evt) {
-		Contrato c = (Contrato)jCmbLivros.getSelectedItem();  
-		 JOptionPane.showMessageDialog(null,"Código: " + c.getCodigo() + " - Nome: " + c.getNome()); 
+	private void mostrarGrafica(){
+		if(jCmbGraficas.getSelectedIndex()!=-1){
+			Grafica grafica = (Grafica)jCmbGraficas.getSelectedItem();
+			
+			if(grafica instanceof GraficaEmpresa){
+				jLblTipoGrafica.setText("Gráfica da Empresa");
+			}
+			if(grafica instanceof GraficaTerceirizada){
+				jLblTipoGrafica.setText("Gráfica Terceirizada");
+			}
+				
+		}else{
+			jLblTipoGrafica.setText("");
+		}
+	}
+	
+	
+	
+	private void jBtnInserirActionPerformed(ActionEvent evt) {
+		try {
+			this.validacao();
+			LoteLivro loteLivro = new LoteLivro();
+
+			loteLivro.setLivro((Livro) jCmbLivros.getSelectedItem());
+			loteLivro.setGrafica((Grafica) jCmbGraficas.getSelectedItem());
+			int numeroCopias = Integer.parseInt(jTxtNumeroCopias.getText());
+			loteLivro.setNumeroCopias(numeroCopias);
+			loteLivro.setDataEntrega(Conversor.parseDateSQL(jTxtDataEntrega.getText()));
+			fachada.inserirLoteLivro(loteLivro);
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Número de copias deve conter um valor inteiro.");
+		}
+	}
+	
+	private void jBtnAlterarActionPerformed(ActionEvent evt) {
+		try {
+			this.validacao();
+			int codigo;
+			codigo = Integer.parseInt(JOptionPane.showInputDialog(null,
+					"Informe o código do Lote: "
+					));
+			LoteLivro loteLivro = new LoteLivro();
+			loteLivro.setCodigo(codigo);
+			
+			loteLivro.setLivro((Livro) jCmbLivros.getSelectedItem());
+			loteLivro.setGrafica((Grafica) jCmbGraficas.getSelectedItem());
+			int numeroCopias = Integer.parseInt(jTxtNumeroCopias.getText());
+			loteLivro.setNumeroCopias(numeroCopias);
+			
+			loteLivro.setDataEntrega(Conversor.parseDateSQL(jTxtDataEntrega.getText()));
+			fachada.alterarLoteLivro(loteLivro);
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo Código e o número de copias devem conter um valor inteiro.");
+		}
+	}
+	
+	private void jBtnRemoverActionPerformed(ActionEvent evt) {
+		try {
+			this.validacao();
+			int codigo;
+			codigo = Integer.parseInt(JOptionPane.showInputDialog(null,
+					"Informe o código do Lote: "
+					));			
+			fachada.removerLoteLivro(codigo);
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo Código deve conter um valor inteiro.");
+		}
+	}
+	
+	private void jBtnConsultarActionPerformed(ActionEvent evt) {
+		try {
+			int codigo;
+			codigo = Integer.parseInt(JOptionPane.showInputDialog(null,
+					"Informe o código do Lote: "
+					));			
+			LoteLivro loteLivro = fachada.consultarLoteLivro(codigo);
+			jTxtNumeroCopias.setText(loteLivro.getNumeroCopias()+"");
+			jTxtDataEntrega.setText(Conversor.formatDateSQL(loteLivro.getDataEntrega()));
+			jCmbGraficas.setSelectedItem(loteLivro.getGrafica());
+			jCmbLivros.setSelectedItem(loteLivro.getLivro());
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo Código deve conter um valor inteiro.");
+		}
 	}
 	
 	private void jCmbGraficasActionPerformed(ActionEvent evt) {
-		System.out.println("jCmbGraficas.actionPerformed, event="+evt);
-		//TODO add your code for jCmbGraficas.actionPerformed
+		mostrarGrafica();
 	}
-
+	
+	
 }
