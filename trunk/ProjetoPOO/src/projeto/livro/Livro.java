@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import projeto.autor.Autor;
 import projeto.editora.Editora;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Livro {
 	

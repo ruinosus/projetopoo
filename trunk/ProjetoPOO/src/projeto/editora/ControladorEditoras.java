@@ -59,6 +59,9 @@ public class ControladorEditoras {
 	
 	public void remover(int codigo)throws ExcecaoNegocio{
 		Editora editora = repEditoras.consultar(codigo);
+		if(editora==null){
+			throw new ExcecaoNegocio("Nenhuma editora encontrada");
+		}
 		repEditoras.remover(codigo);			
 		contEnderecos.remover(editora.getEndereco().getCodigo());
 	}

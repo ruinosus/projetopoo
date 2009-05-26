@@ -30,6 +30,7 @@ import projeto.autor.Autor;
 import projeto.editora.Editora;
 import projeto.excecao.ExcecaoNegocio;
 import projeto.livro.Livro;
+import projeto.util.Conversor;
 import sun.text.resources.FormatData;
 
 
@@ -130,21 +131,36 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 				getContentPane().add(jBtnConsultar);
 				jBtnConsultar.setText("Consultar");
 				jBtnConsultar.setBounds(190, 194, 63, 23);
-				
+				jBtnConsultar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnConsultarActionPerformed(evt);
+					}
+				});
+
 			}
 			{
 				jBtnRemover = new JButton();
 				getContentPane().add(jBtnRemover);
 				jBtnRemover.setText("Remover");
 				jBtnRemover.setBounds(126, 194, 59, 23);
-				
+				jBtnRemover.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnRemoverActionPerformed(evt);
+					}
+				});
+
 			}
 			{
 				jBtnAlterar = new JButton();
 				getContentPane().add(jBtnAlterar);
 				jBtnAlterar.setText("Alterar");
 				jBtnAlterar.setBounds(72, 194, 47, 23);
-				
+				jBtnAlterar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnAlterarActionPerformed(evt);
+					}
+				});
+
 			}
 			{
 				jBtnInserir = new JButton();
@@ -244,21 +260,20 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 				jCmbEditora.addItem(editoras.get(i));
 			}
 		} catch (ExcecaoNegocio e) {
-			
-			e.printStackTrace();
+
 		}
 	}
 	
 	private void carregarAutores(){
 		try {
+			jCmbAutor.removeAllItems();
 			ArrayList<Autor> autores =  fachada.consultarAutor();
 			
 			for (int i = 0; i < autores.size(); i++) {
 				jCmbAutor.addItem(autores.get(i));
 			}
 		} catch (ExcecaoNegocio e) {
-			
-			e.printStackTrace();
+
 		}
 	}
 	
@@ -287,6 +302,7 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 	
 	private void jBtnInserirActionPerformed(ActionEvent evt) {		
 		try {
+			this.validacao();
 			Livro livro = new Livro();
 			ArrayList<Autor> autores = new ArrayList<Autor>();
 			
@@ -297,18 +313,107 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 			livro.setAutor(autores);
 			livro.setTitulo(jTxtTitulo.getText());
 			livro.setEditora((Editora) jCmbEditora.getSelectedItem());
-			livro.setDataPublicacao(formatador.parse(jTxtDataPublicacao.getText()));
+			
+			livro.setDataPublicacao(Conversor.parseDateSQL(jTxtDataPublicacao.getText()));
 			livro.setIsbn(Integer.parseInt(jTxtIsnb.getText()));
 			fachada.inserirLivro(livro);
-		} catch (ParseException e) {
-			JOptionPane.showMessageDialog(null, "A data deve ser informada corretamente.");
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "O Campo Isbn devem conter um valor inteiro.");
-			e.printStackTrace();
 		}
 	}
-
+	
+	private void jBtnAlterarActionPerformed(ActionEvent evt) {
+		try {
+			this.validacao();
+			Livro livro = new Livro();
+			ArrayList<Autor> autores = new ArrayList<Autor>();
+			
+			for (int i = 0; i < jCmbAutorLivro.getItemCount(); i++) {
+				Autor autor = (Autor) jCmbAutorLivro.getItemAt(i);
+				autores.add(autor);
+			}
+			livro.setAutor(autores);
+			livro.setTitulo(jTxtTitulo.getText());
+			livro.setEditora((Editora) jCmbEditora.getSelectedItem());
+			
+			livro.setDataPublicacao(Conversor.parseDateSQL(jTxtDataPublicacao.getText()));
+			livro.setIsbn(Integer.parseInt(jTxtIsnb.getText()));
+			fachada.alterarLivro(livro);
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo Isbn devem conter um valor inteiro.");
+		}
+	}
+	
+	private void jBtnRemoverActionPerformed(ActionEvent evt) {
+		try {
+			if(jTxtIsnb.getText().trim().equals("")){
+				throw new ExcecaoNegocio("O Isbn deve ser informado");
+			}
+			int isbn = (Integer.parseInt(jTxtIsnb.getText()));
+			fachada.removerLivro(isbn);
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo Isbn devem conter um valor inteiro.");
+		} 
+	}
+	
+	private void jBtnConsultarActionPerformed(ActionEvent evt) {
+		try {
+			if(jTxtIsnb.getText().trim().equals("")){
+				throw new ExcecaoNegocio("O Isbn deve ser informado");
+			}
+			int isbn = (Integer.parseInt(jTxtIsnb.getText()));
+			Livro livro = fachada.consultarLivro(isbn);
+			jTxtIsnb.setText(livro.getIsbn()+"");
+			jTxtDataPublicacao.setText(Conversor.formatDateSQL(livro.getDataPublicacao()));
+			jTxtTitulo.setText(livro.getTitulo());
+			jCmbEditora.setSelectedItem(livro.getEditora());
+			jCmbAutorLivro.removeAllItems();
+			
+			this.carregarAutores();
+			ArrayList<Autor> autores = livro.getAutor();
+			for (int i = 0; i < autores.size(); i++) {
+				jCmbAutorLivro.addItem(autores.get(i));					
+			}	
+			
+			this.ajustarAutor();
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo Isbn devem conter um valor inteiro.");
+		} 
+	}
+	
+	private void ajustarAutor(){
+		for (int i = 0; i < jCmbAutorLivro.getItemCount(); i++) {
+			Autor autor = (Autor) jCmbAutorLivro.getItemAt(i);
+			for (int j = 0; j < jCmbAutor.getItemCount(); j++) {
+				Autor autor2 = (Autor) jCmbAutor.getItemAt(j);
+				if(autor.equals(autor2)){
+					jCmbAutor.removeItem(autor2);
+				}
+			}
+		}
+		habilitarAdicionar();
+		habilitarRemover();
+	}
+	private void validacao() throws ExcecaoNegocio{		
+		if(jTxtIsnb.getText().trim().equals("")){
+			throw new ExcecaoNegocio("O Isbn deve ser informado");
+		}
+		if(jTxtTitulo.getText().trim().equals("")){
+			throw new ExcecaoNegocio("O título deve ser informado");
+		}
+		if(jTxtDataPublicacao.getText().trim().equals("")){
+			throw new ExcecaoNegocio("A data de publicação deve ser informada");
+		}
+		if(jCmbEditora.getSelectedIndex() == -1){
+			throw new ExcecaoNegocio("A editora deve ser informada");
+		}
+	}
 }

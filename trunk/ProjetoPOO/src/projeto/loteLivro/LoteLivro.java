@@ -1,6 +1,6 @@
 package projeto.loteLivro;
 
-import java.util.Date;
+import java.sql.Date;
 
 import projeto.grafica.Grafica;
 import projeto.livro.Livro;
