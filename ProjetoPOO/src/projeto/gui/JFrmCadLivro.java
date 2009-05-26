@@ -65,7 +65,7 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 	private JTextField jTxtDataPublicacao;
 	private JLabel jLblDataPublicacao;
 	private Fachada fachada = Fachada.obterInstancia();
-	private SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy"); 
+
 	
 	{
 		//Set Look & Feel
@@ -320,7 +320,7 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "O Campo Isbn devem conter um valor inteiro.");
+			JOptionPane.showMessageDialog(null, "O Campo Isbn deve conter um valor inteiro.");
 		}
 	}
 	
@@ -344,7 +344,7 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "O Campo Isbn devem conter um valor inteiro.");
+			JOptionPane.showMessageDialog(null, "O Campo Isbn deve conter um valor inteiro.");
 		}
 	}
 	
@@ -358,7 +358,7 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "O Campo Isbn devem conter um valor inteiro.");
+			JOptionPane.showMessageDialog(null, "O Campo Isbn deve conter um valor inteiro.");
 		} 
 	}
 	
@@ -385,7 +385,7 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "O Campo Isbn devem conter um valor inteiro.");
+			JOptionPane.showMessageDialog(null, "O Campo Isbn deve conter um valor inteiro.");
 		} 
 	}
 	

@@ -142,6 +142,7 @@ public class RepositorioContratos implements IRepositorioContratos {
 					
 		}
 
+	@SuppressWarnings("finally")
 	public ArrayList<Contrato> consultar() throws ExcecaoNegocio {
 		ArrayList<Contrato>  contratos = new ArrayList<Contrato> ();
 		Connection conexao = UtilBD.obterConexao();

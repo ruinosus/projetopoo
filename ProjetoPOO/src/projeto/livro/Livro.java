@@ -63,5 +63,19 @@ public class Livro {
 		return this.titulo;
 	}
 	
+	public boolean equals(Object o){
+		boolean resultado = false;
+		if (o instanceof Livro){
+			Livro l = (Livro)o;
+			if(l.getIsbn()== this.getIsbn()){
+				resultado = true;
+			}
+		}
+		
+		return resultado;
+	}
+	
+	
+	
 
 }

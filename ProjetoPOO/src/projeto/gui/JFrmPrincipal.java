@@ -23,6 +23,7 @@ import javax.swing.SwingUtilities;
 */
 public class JFrmPrincipal extends javax.swing.JFrame {
 	private JButton jBtnAutor;
+	private JButton jBtnLoteLivro;
 	private JButton jBtnGrafica;
 	private JButton jBtnContrato;
 	private JButton jBtnLivro;
@@ -63,7 +64,7 @@ public class JFrmPrincipal extends javax.swing.JFrame {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
-			this.setPreferredSize(new java.awt.Dimension(176, 234));
+			this.setPreferredSize(new java.awt.Dimension(176, 218));
 			{
 				jBtnAutor = new JButton();
 				getContentPane().add(jBtnAutor);
@@ -79,7 +80,7 @@ public class JFrmPrincipal extends javax.swing.JFrame {
 				jBtnEditora = new JButton();
 				getContentPane().add(jBtnEditora);
 				jBtnEditora.setText("Cadastro de Editora");
-				jBtnEditora.setBounds(12, 50, 136, 23);
+				jBtnEditora.setBounds(12, 42, 137, 23);
 				jBtnEditora.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						jBtnEditoraActionPerformed(evt);
@@ -90,7 +91,7 @@ public class JFrmPrincipal extends javax.swing.JFrame {
 				jBtnLivro = new JButton();
 				getContentPane().add(jBtnLivro);
 				jBtnLivro.setText("Cadastro de Livro");
-				jBtnLivro.setBounds(12, 82, 136, 23);
+				jBtnLivro.setBounds(12, 67, 136, 23);
 				jBtnLivro.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						jBtnLivroActionPerformed(evt);
@@ -101,7 +102,7 @@ public class JFrmPrincipal extends javax.swing.JFrame {
 				jBtnContrato = new JButton();
 				getContentPane().add(jBtnContrato);
 				jBtnContrato.setText("Cadastro de Contrato");
-				jBtnContrato.setBounds(13, 116, 136, 22);
+				jBtnContrato.setBounds(12, 93, 136, 22);
 				jBtnContrato.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						jBtnContratoActionPerformed(evt);
@@ -112,15 +113,26 @@ public class JFrmPrincipal extends javax.swing.JFrame {
 				jBtnGrafica = new JButton();
 				getContentPane().add(jBtnGrafica);
 				jBtnGrafica.setText("Cadastro de Gráfica");
-				jBtnGrafica.setBounds(13, 149, 136, 22);
+				jBtnGrafica.setBounds(12, 120, 137, 22);
 				jBtnGrafica.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						jBtnGraficaActionPerformed(evt);
 					}
 				});
 			}
+			{
+				jBtnLoteLivro = new JButton();
+				getContentPane().add(jBtnLoteLivro);
+				jBtnLoteLivro.setText("Cadastro de Lotes Livro");
+				jBtnLoteLivro.setBounds(12, 147, 137, 23);
+				jBtnLoteLivro.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnLoteLivroActionPerformed(evt);
+					}
+				});
+			}
 			pack();
-			this.setSize(176, 234);
+			this.setSize(176, 218);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -149,6 +161,11 @@ public class JFrmPrincipal extends javax.swing.JFrame {
 	private void jBtnGraficaActionPerformed(ActionEvent evt) {
 		JFrmCadGrafica frmCadGrafica = new JFrmCadGrafica();
 		frmCadGrafica.setVisible(true);
+	}
+	
+	private void jBtnLoteLivroActionPerformed(ActionEvent evt) {
+		JFrmCadLoteLivro frmCadLoteLivro = new JFrmCadLoteLivro();
+		frmCadLoteLivro.setVisible(true);
 	}
 
 }
