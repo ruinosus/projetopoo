@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import projeto.excecao.ExcecaoNegocio;
+
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 public class Conversor {
@@ -16,7 +18,7 @@ public class Conversor {
 	* @return java.sql.Date
 	* @throws Exception Caso a String esteja no formato errado
 	*/
-	public static Date parseDate(String strData) throws Exception {
+	public static Date parseDate(String strData) throws ExcecaoNegocio {
 	if (strData == null || strData.equals("")) {
 	return null;
 	}
@@ -25,7 +27,9 @@ public class Conversor {
 	DateFormat f = new SimpleDateFormat("dd/MM/yyyy");
 	date = (java.util.Date) f.parse(strData);
 	} catch (ParseException e) {
-	throw new Exception("Data com formato inválido");
+	throw new ExcecaoNegocio("Data com formato inválido");
+	} catch (java.text.ParseException e) {
+		throw new ExcecaoNegocio("Data com formato inválido");
 	}
 	return date;
 	}
@@ -39,7 +43,7 @@ public class Conversor {
 	* @return java.sql.Date
 	* @throws Exception Caso a String esteja no formato errado
 	*/
-	public static java.sql.Date parseDateSQL(String strData) throws Exception {
+	public static java.sql.Date parseDateSQL(String strData) throws ExcecaoNegocio {
 	if (strData == null || strData.equals("")) {
 	return null;
 	}
@@ -48,8 +52,22 @@ public class Conversor {
 	DateFormat f = new SimpleDateFormat("dd/MM/yyyy");
 	date = (java.util.Date) f.parse(strData);
 	} catch (ParseException e) {
-	throw new Exception("Data com formato inválido");
+	throw new ExcecaoNegocio("Data com formato inválido");
+	} catch (java.text.ParseException e) {
+		throw new ExcecaoNegocio("Data com formato inválido");
 	}
 	return new java.sql.Date(date.getTime());
 	} 
+	
+	public static  String formatDateSQL(java.sql.Date sqlData) throws ExcecaoNegocio {
+		if (sqlData == null) {
+		return null;
+		}
+		try {
+		DateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+		return f.format(new Date(sqlData.getTime()));
+		} catch (ParseException e) {
+		throw new ExcecaoNegocio("Data com formato inválido");
+		}
+		} 
 }

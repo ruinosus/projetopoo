@@ -46,5 +46,17 @@ public class Editora {
 		return this.nome;
 	}
 	
+	public boolean equals(Object o){
+		boolean resultado = false;
+		if (o instanceof Editora){
+			Editora e = (Editora)o;
+			if(e.getCodigo()== this.getCodigo()){
+				resultado = true;
+			}
+		}
+		
+		return resultado;
+	}
+	
 
 }

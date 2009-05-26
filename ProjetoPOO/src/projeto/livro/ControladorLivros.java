@@ -40,8 +40,13 @@ public class ControladorLivros {
 		}
 	}
 	
-	public Livro consultar(int isbn) throws ExcecaoNegocio {
-		return repLivros.consultar(isbn);
+	public Livro consultar(int isbn) throws ExcecaoNegocio {		
+		if(repLivros.existe(isbn)){
+			return this.montarLivro(repLivros.consultar(isbn));
+		}else{
+			throw new ExcecaoNegocio ("Erro: Livro informado não existe no cadastro de Livros.");
+		}
+		
 	}
 	public ArrayList<Livro> consultar(String titulo) throws ExcecaoNegocio {
 		ArrayList<Livro> livros = repLivros.consultar(titulo);
@@ -70,11 +75,25 @@ public class ControladorLivros {
 			repLivros.remover(isbn);
 		}else{
 			throw new ExcecaoNegocio("Erro: Livro informado não existe no cadastro de Livros.");
-		  }
+		}
 	}
 
-	public void alterar(Livro livros) throws ExcecaoNegocio {
-		repLivros.alterar(livros);
+	public void alterar(Livro livro) throws ExcecaoNegocio {		
+		if(this.repLivros.existe(livro.getIsbn())) {
+			repLivros.alterar(livro);
+				if(livro.getAutor().size() > 0 && livro.getAutor()!=null){
+					this.repLivros.removerLivroAutor(livro.getIsbn());
+					 for(int i=0; i <livro.getAutor().size(); i++ ){
+						 int identidade = livro.getAutor().get(i).getIdentidade();
+						 int isbn = livro.getIsbn();
+						 this.repLivros.inserirLivroAutor(isbn, identidade);
+					 }
+				 }else{
+					 this.repLivros.removerLivroAutor(livro.getIsbn());
+				 }
+			}else{
+				throw new ExcecaoNegocio("Erro: Livro informado não existe no cadastro de Livros.");
+			}
 	}
 	
 	@SuppressWarnings("unused")

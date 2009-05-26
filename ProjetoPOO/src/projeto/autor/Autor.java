@@ -40,6 +40,17 @@ public class Autor {
 	public String toString(){
 		return this.nome;
 	}
+	public boolean equals(Object o){
+		boolean resultado = false;
+		if (o instanceof Autor){
+			Autor e = (Autor)o;
+			if(e.identidade== this.getIdentidade()){
+				resultado = true;
+			}
+		}
+		
+		return resultado;
+	}
 
 
 	

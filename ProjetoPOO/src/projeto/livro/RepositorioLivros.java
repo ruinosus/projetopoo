@@ -28,9 +28,10 @@ public class RepositorioLivros implements IRepositorioLivros{
 		Connection conexao = UtilBD.obterConexao();
 		try {			
 			PreparedStatement comando = conexao.prepareStatement(QUERY_UPDATE); 			
-			comando.setString(1, novoLivro.getTitulo());
-			comando.setDate(2, (Date) novoLivro.getDataPublicacao());
-			comando.setInt(3, novoLivro.getIsbn());
+			comando.setInt(1, novoLivro.getEditora().getCodigo());
+			comando.setString(2, novoLivro.getTitulo());
+			comando.setDate(3, (Date) novoLivro.getDataPublicacao());
+			comando.setInt(4, novoLivro.getIsbn());
 			comando.executeUpdate();
 			System.out.println("Alteração com Sucesso!");
 			
@@ -165,7 +166,7 @@ public class RepositorioLivros implements IRepositorioLivros{
 		int isbn = rs.getInt("COD_LIVRO");
 		int codEditora = rs.getInt("COD_EDITORA");
 		String titulo = rs.getString("TITULO");
-		Date datapublicacao = rs.getDate("COD_LIVRO");
+		Date datapublicacao = rs.getDate("DATA_PUBLICACAO");
 		Editora editora = new Editora();
 		editora.setCodigo(codEditora);
 

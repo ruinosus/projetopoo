@@ -288,6 +288,7 @@ public class JFrmCadAutor extends javax.swing.JFrame {
 	
 	private void jBtnInserirActionPerformed(ActionEvent evt) {
 		try {
+			this.validacao();
 			Autor autor = new Autor();
 			autor.setIdentidade(Integer.parseInt(jTxtIdentidade.getText()));
 			autor.setNome(jTxtNome.getText());
@@ -304,15 +305,14 @@ public class JFrmCadAutor extends javax.swing.JFrame {
 			fachada.inserirAutor(autor);
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "O Campo Identidade e cep devem conter um valor inteiro.");
-			e.printStackTrace();
 		}
 	}
 	
 	private void jBtnAlterarActionPerformed(ActionEvent evt) {
 		try {
+			this.validacao();
 			Autor autor = new Autor();
 			autor.setIdentidade(Integer.parseInt(jTxtIdentidade.getText()));
 			autor.setNome(jTxtNome.getText());
@@ -330,31 +330,32 @@ public class JFrmCadAutor extends javax.swing.JFrame {
 			fachada.alterarAutor(autor);
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "O Campo Identidade e cep devem conter um valor inteiro.");
-			e.printStackTrace();
 		}
 	}
 	
 	private void jBtnRemoverActionPerformed(ActionEvent evt) {
 		try {
+			if(jTxtIdentidade.getText().trim().equals("")){
+				throw new ExcecaoNegocio("A Identidade deve ser informada");
+			}
 			int identidade = (Integer.parseInt(jTxtIdentidade.getText()));
 
 			fachada.removerAutor(identidade);			
 			
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "O Campo Identidade deve conter um valor inteiro.");
-			e.printStackTrace();
 		}
 	}
 	
 	private void jBtnConsultarActionPerformed(ActionEvent evt) {
 		try {			
-			
+			if(jTxtIdentidade.getText().trim().equals("")){
+				throw new ExcecaoNegocio("A Identidade deve ser informada");
+			}
 			int identidade = Integer.parseInt(jTxtIdentidade.getText());
 			Autor autor = fachada.consultarAutor(identidade);
 			jTxtBairro.setText(autor.getEndereco().getBairro());
@@ -369,10 +370,16 @@ public class JFrmCadAutor extends javax.swing.JFrame {
 			jCmbUf.setSelectedItem(autor.getEndereco().getUf());
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "O Campo Identidade e cep devem conter um valor inteiro.");
-			e.printStackTrace();
+		}
+	}
+	private void validacao() throws ExcecaoNegocio{		
+		if(jTxtIdentidade.getText().trim().equals("")){
+			throw new ExcecaoNegocio("A Identidade deve ser informada");
+		}
+		if(jTxtNome.getText().trim().equals("")){
+			throw new ExcecaoNegocio("O Nome deve ser informado");
 		}
 	}
 

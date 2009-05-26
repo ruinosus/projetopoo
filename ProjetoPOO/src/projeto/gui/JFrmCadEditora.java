@@ -277,6 +277,7 @@ public class JFrmCadEditora extends javax.swing.JFrame {
 	
 	private void jBtnInserirActionPerformed(ActionEvent evt) {
 		try {
+			this.validacao();
 			Editora editora = new Editora();
 			editora.setNome(jTxtNome.getText());
 			Endereco endereco = new Endereco();
@@ -292,10 +293,8 @@ public class JFrmCadEditora extends javax.swing.JFrame {
 			fachada.inserirEditora(editora);
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "O  cep deve conter um valor inteiro.");
-			e.printStackTrace();
 		}
 	}
 	
@@ -321,10 +320,8 @@ public class JFrmCadEditora extends javax.swing.JFrame {
 			fachada.alterarEditora(editora);
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "O  cep deve conter um valor inteiro.");
-			e.printStackTrace();
 		}
 	}
 	
@@ -339,10 +336,8 @@ public class JFrmCadEditora extends javax.swing.JFrame {
 			
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "O Campo código deve conter um valor inteiro.");
-			e.printStackTrace();
 		}
 	}
 	
@@ -364,11 +359,13 @@ public class JFrmCadEditora extends javax.swing.JFrame {
 			jCmbUf.setSelectedItem(editora.getEndereco().getUf());
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "O Campo cep devem conter um valor inteiro.");
-			e.printStackTrace();
 		}
 	}
-
+	private void validacao() throws ExcecaoNegocio{		
+		if(jTxtNome.getText().trim().equals("")){
+			throw new ExcecaoNegocio("O Nome deve ser informado");
+		}
+	}
 }
