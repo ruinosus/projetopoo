@@ -98,6 +98,9 @@ public class Fachada {
       public ArrayList<Contrato> consultarContrato(String nome)throws ExcecaoNegocio{
     	 return this.controladorContratos.consultar(nome);
       }
+      public ArrayList<Contrato> consultarContrato()throws ExcecaoNegocio{
+     	 return this.controladorContratos.consultar();
+       }
       
       public Contrato consultarContrato(int codigo)throws ExcecaoNegocio{
      	 return this.controladorContratos.consultar(codigo);

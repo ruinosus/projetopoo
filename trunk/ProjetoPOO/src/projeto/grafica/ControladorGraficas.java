@@ -38,11 +38,10 @@ public class ControladorGraficas {
 			GraficaTerceirizada graficaTerceirizada = (GraficaTerceirizada) grafica;
 			
 			GraficaEmpresa graficaEmpresa = new GraficaEmpresa(graficaTerceirizada.getCodigo(),graficaTerceirizada.getNome());
-			graficaEmpresa  = this.repGraficasEmpresas.inserir(graficaEmpresa);
-			graficaTerceirizada.setCodigo(graficaEmpresa.getCodigo());
+			graficaTerceirizada.setCodigo(this.repGraficasEmpresas.inserir(graficaEmpresa));
 			
 			graficaTerceirizada.setEndereco(this.contEnderecos.inserir(graficaTerceirizada.getEndereco()));
-			graficaTerceirizada.setContrato(this.contContratos.inserir(graficaTerceirizada.getContrato()));
+			//graficaTerceirizada.setContrato(this.contContratos.inserir(graficaTerceirizada.getContrato()));
 			this.repGraficasTerceirizadas.inserir(graficaTerceirizada);
 		}
 	}
@@ -52,10 +51,10 @@ public class ControladorGraficas {
 		grafica = this.repGraficasEmpresas.consultar(codigo);
 		
 		if(grafica != null){
-			grafica = this.repGraficasTerceirizadas.consultar(codigo);
+			GraficaTerceirizada gt = this.repGraficasTerceirizadas.consultar(codigo);
 			
-			if(grafica != null){
-				grafica=this.montarGraficaTerceirizada((GraficaTerceirizada)grafica);
+			if(gt != null){
+				grafica=this.montarGraficaTerceirizada((GraficaTerceirizada)gt);
 			}
 		}else{
 			throw new ExcecaoNegocio("Gráfica informada não exisite no sistema.");
@@ -134,7 +133,7 @@ public class ControladorGraficas {
 	@SuppressWarnings("unused")
 	private GraficaTerceirizada montarGraficaTerceirizada(GraficaTerceirizada graficaTerceirizada) throws ExcecaoNegocio{
 		
-		GraficaEmpresa graficaEmpresa = new GraficaEmpresa(graficaTerceirizada.getCodigo(),graficaTerceirizada.getNome());
+		GraficaEmpresa graficaEmpresa = this.repGraficasEmpresas.consultar(graficaTerceirizada.getCodigo());
 		Endereco endereco = this.contEnderecos.consultar(graficaTerceirizada.getEndereco().getCodigo());
 		Contrato contrato = this.contContratos.consultar(graficaTerceirizada.getContrato().getCodigo());
 

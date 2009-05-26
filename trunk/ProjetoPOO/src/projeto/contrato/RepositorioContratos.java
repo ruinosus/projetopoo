@@ -14,11 +14,11 @@ public class RepositorioContratos implements IRepositorioContratos {
 
 	private static final String QUERY_INSERT = "INSERT INTO CONTRATO (NOME_RESPONSAVEL,VALOR) VALUES (?,?)";
 	private static final String QUERY_UPDATE = "UPDATE CONTRATO SET NOME_RESPONSAVEL = ?, VALOR = ? WHERE COD_CONTRATO = ?";
-	private static final String QUERY_SELECT_CODIGO = "SELECT COD_CONTRADO,NOME_RESPONSAVEL,VALOR FROM CONTRATO WHERE COD_CONTRATO = ?";
+	private static final String QUERY_SELECT_CODIGO = "SELECT COD_CONTRATO,NOME_RESPONSAVEL,VALOR FROM CONTRATO WHERE COD_CONTRATO = ?";
 	private static final String QUERY_ULTIMO_CODIGO = "SELECT MAX(COD_CONTRADO) MAXCOD FROM CONTRATO";	
-	private static final String QUERY_SELECT_NOME = "SELECT COD_CONTRADO,NOME_RESPONSAVEL,VALOR FROM CONTRATO WHERE NOME_RESPONSAVEL LIKE ?" ;
+	private static final String QUERY_SELECT_NOME = "SELECT COD_CONTRATO,NOME_RESPONSAVEL,VALOR FROM CONTRATO WHERE NOME_RESPONSAVEL LIKE ?" ;
 	private static final String QUERY_DELETE = "DELETE FROM CONTRATO WHERE COD_CONTRATO = ?";
-		
+	private static final String QUERY_SELECT_ALL = "SELECT COD_CONTRATO,NOME_RESPONSAVEL,VALOR FROM CONTRATO" ;	
 	
 	public void alterar(Contrato contrato) throws ExcecaoNegocio {
 		Connection conexao = UtilBD.obterConexao();
@@ -141,5 +141,22 @@ public class RepositorioContratos implements IRepositorioContratos {
 			}
 					
 		}
+
+	public ArrayList<Contrato> consultar() throws ExcecaoNegocio {
+		ArrayList<Contrato>  contratos = new ArrayList<Contrato> ();
+		Connection conexao = UtilBD.obterConexao();
+		try {			
+			PreparedStatement comando = conexao.prepareStatement(QUERY_SELECT_ALL);
+			ResultSet rs = comando.executeQuery();
+			while(rs.next()){
+				contratos.add(this.criarContrato(rs));
+			}
+		}catch (SQLException e){
+			throw new ExcecaoNegocio(e.getMessage());
+		} finally{
+			UtilBD.fecharConexao(conexao);
+			return contratos;
+		}
+	}
 
 }

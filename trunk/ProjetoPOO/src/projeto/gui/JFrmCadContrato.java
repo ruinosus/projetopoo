@@ -1,9 +1,19 @@
 package projeto.gui;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
+
+import projeto.Fachada;
+import projeto.autor.Autor;
+import projeto.contrato.Contrato;
+import projeto.endereco.Endereco;
+import projeto.excecao.ExcecaoNegocio;
 
 
 /**
@@ -28,16 +38,21 @@ public class JFrmCadContrato extends javax.swing.JFrame {
 	{
 		//Set Look & Feel
 		try {
-			javax.swing.UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			javax.swing.UIManager.setLookAndFeel("com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	private JLabel jLblNomeResponsavel;
+	private JButton jBtnRemover;
+	private JButton jBtnAlterar;
+	private JButton jBtnInserir;
+	private JButton jBtnConsultar;
 	private JTextField jTxtValor;
 	private JTextField jTxtNomeResponsavel;
 	private JLabel jLblValor;
+	private Fachada fachada = Fachada.obterInstancia();
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -85,10 +100,125 @@ public class JFrmCadContrato extends javax.swing.JFrame {
 				jTxtValor.setBounds(137, 54, 187, 20);
 				jTxtValor.setText("0");
 			}
+			{
+				jBtnConsultar = new JButton();
+				getContentPane().add(jBtnConsultar);
+				jBtnConsultar.setText("Consultar");
+				jBtnConsultar.setBounds(188, 94, 75, 23);
+				jBtnConsultar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnConsultarActionPerformed(evt);
+					}
+				});
+			}
+			{
+				jBtnRemover = new JButton();
+				getContentPane().add(jBtnRemover);
+				jBtnRemover.setText("Remover");
+				jBtnRemover.setBounds(124, 94, 59, 23);
+				jBtnRemover.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnRemoverActionPerformed(evt);
+					}
+				});
+			}
+			{
+				jBtnAlterar = new JButton();
+				getContentPane().add(jBtnAlterar);
+				jBtnAlterar.setText("Alterar");
+				jBtnAlterar.setBounds(75, 94, 47, 23);
+				jBtnAlterar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnAlterarActionPerformed(evt);
+					}
+				});
+			}
+			{
+				jBtnInserir = new JButton();
+				getContentPane().add(jBtnInserir);
+				jBtnInserir.setText("Inserir");
+				jBtnInserir.setBounds(12, 95, 60, 21);
+				jBtnInserir.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnInserirActionPerformed(evt);
+					}
+				});
+			}
 			pack();
-			this.setSize(416, 193);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	private void validacao() throws ExcecaoNegocio{		
+		if(jTxtNomeResponsavel.getText().trim().equals("")){
+			throw new ExcecaoNegocio("O Nome deve ser informado");
+		}
+		if(jTxtValor.getText().trim().equals("")){
+			throw new ExcecaoNegocio("O valor deve ser informado");
+		}
+	}
+	private void jBtnInserirActionPerformed(ActionEvent evt) {
+		try {
+			this.validacao();
+			Contrato contrato = new Contrato();
+			contrato.setNome(jTxtNomeResponsavel.getText());
+			double valor = Double.parseDouble(jTxtValor.getText());
+			contrato.setValor(valor);
+			fachada.inserirContrato(contrato);
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo Valor deve conter um valor númerico");
+		}
+	}
+	
+	private void jBtnAlterarActionPerformed(ActionEvent evt) {
+		try {
+			this.validacao();
+			int codigo;
+			codigo = Integer.parseInt(JOptionPane.showInputDialog(null,
+					"Informe o código do Contrato: "
+					));
+			Contrato contrato = new Contrato();
+			contrato.setCodigo(codigo);
+			contrato.setNome(jTxtNomeResponsavel.getText());
+			double valor = Double.parseDouble(jTxtValor.getText());
+			contrato.setValor(valor);
+			fachada.alterarContrato(contrato);
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo o código e Valor devem conter um valor númerico");
+		}
+	}
+	
+	private void jBtnRemoverActionPerformed(ActionEvent evt) {
+		try {
+			int codigo;
+			codigo = Integer.parseInt(JOptionPane.showInputDialog(null,
+					"Informe o código do Contrato: "
+					));			
+			fachada.removerContrato(codigo);
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo o código deve conter um valor inteiro");
+		}
+	}
+	
+	private void jBtnConsultarActionPerformed(ActionEvent evt) {
+		try {
+			int codigo;
+			codigo = Integer.parseInt(JOptionPane.showInputDialog(null,
+					"Informe o código do Contrato: "
+					));
+			Contrato contrato = fachada.consultarContrato(codigo);
+			jTxtNomeResponsavel.setText(contrato.getNome());
+			jTxtValor.setText(contrato.getValor()+"");
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo o código deve conter um valor inteiro");
 		}
 	}
 

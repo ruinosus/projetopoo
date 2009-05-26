@@ -15,6 +15,10 @@ public class GraficaTerceirizada extends Grafica {
 		this.endereco = endereco;
 	}	
 	
+	public GraficaTerceirizada() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Endereco getEndereco() {
 		return endereco;
 	}

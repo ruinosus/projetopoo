@@ -1,5 +1,6 @@
 package projeto.contrato;
 
+
 public class Contrato {
 
 	private int codigo;
@@ -36,6 +37,18 @@ public class Contrato {
 	
 	public String toString(){
 		return this.nome;
+	}
+	
+	public boolean equals(Object o){
+		boolean resultado = false;
+		if (o instanceof Contrato){
+			Contrato c = (Contrato)o;
+			if(c.getCodigo()== this.getCodigo()){
+				resultado = true;
+			}
+		}
+		
+		return resultado;
 	}
 	
 }
