@@ -1,6 +1,8 @@
 package projeto.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 
@@ -9,6 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -17,6 +20,14 @@ import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
 import projeto.Fachada;
+import projeto.autor.Autor;
+import projeto.contrato.Contrato;
+import projeto.editora.Editora;
+import projeto.endereco.Endereco;
+import projeto.excecao.ExcecaoNegocio;
+import projeto.grafica.Grafica;
+import projeto.grafica.GraficaEmpresa;
+import projeto.grafica.GraficaTerceirizada;
 
 
 /**
@@ -41,9 +52,7 @@ public class JFrmCadGrafica extends javax.swing.JFrame {
 			e.printStackTrace();
 		}
 	}
-	
-	private JTextField jTxtIdentidade;
-	private JLabel jLblIdentidade;
+
 	private JLabel jLblNumero;
 	private JTextField jTxtCep;
 	private JLabel jLblCep;
@@ -53,6 +62,13 @@ public class JFrmCadGrafica extends javax.swing.JFrame {
 	private JLabel jLblBairro;
 	private JTextField jTxtLogradouro;
 	private JButton jBtnRemover;
+	private JButton jBtnAlterar;
+	private JLabel jLblValorContrato;
+	private JLabel jLblCodigoContrato;
+	private JButton jBtnConsultar;
+	private JButton jBtnInserir;
+	private JComboBox jCmbContrato;
+	private JLabel jLblContrato;
 	private JPanel jPanel1;
 	private JRadioButton jRdGraficaTerceirizada;
 	private JRadioButton jRdGraficaEmpresa;
@@ -88,24 +104,14 @@ public class JFrmCadGrafica extends javax.swing.JFrame {
 		initGUI();
 		getBtnGroupGraficas();
 		jRdGraficaEmpresa.setSelected(true);
+		habilitarComponentes();
+		this.carregarContratos();
 	}
 	
 	private void initGUI() {
 		try {
-			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			getContentPane().setLayout(null);
-			this.setPreferredSize(new java.awt.Dimension(517, 356));
-			{
-				jTxtIdentidade = new JTextField();
-				getContentPane().add(jTxtIdentidade);
-				jTxtIdentidade.setBounds(104, 9, 139, 23);
-			}
-			{
-				jLblIdentidade = new JLabel();
-				getContentPane().add(jLblIdentidade);
-				jLblIdentidade.setText("Identidade:");
-				jLblIdentidade.setBounds(12, 12, 59, 16);
-			}
+			this.setPreferredSize(new java.awt.Dimension(517, 280));
 			{
 				jLblNome = new JLabel();
 				getContentPane().add(jLblNome);
@@ -242,6 +248,14 @@ public class JFrmCadGrafica extends javax.swing.JFrame {
 			{
 				jPanel1 = new JPanel();
 				getContentPane().add(jPanel1);
+				getContentPane().add(getJLblContrato());
+				getContentPane().add(getJCmbContrato());
+				getContentPane().add(getJBtnInserir());
+				getContentPane().add(getJBtnRemover());
+				getContentPane().add(getJBtnAlterar());
+				getContentPane().add(getJBtnConsultar());
+				getContentPane().add(getJLblCodigoContrato());
+				getContentPane().add(getJLblValorContrato());
 				jPanel1.setBounds(314, 12, 169, 51);
 				jPanel1.setBorder(BorderFactory.createTitledBorder("Tipos de Gráfica"));
 				{
@@ -249,12 +263,22 @@ public class JFrmCadGrafica extends javax.swing.JFrame {
 					jPanel1.add(jRdGraficaEmpresa);
 					jRdGraficaEmpresa.setText("Empresa");
 					jRdGraficaEmpresa.setBounds(359, 20, 63, 20);
+					jRdGraficaEmpresa.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent evt) {
+							jRdGraficaEmpresaActionPerformed(evt);
+						}
+					});
 				}
 				{
 					jRdGraficaTerceirizada = new JRadioButton();
 					jPanel1.add(jRdGraficaTerceirizada);
 					jRdGraficaTerceirizada.setText("Terceirizada");
 					jRdGraficaTerceirizada.setBounds(359, 49, 81, 20);
+					jRdGraficaTerceirizada.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent evt) {
+							jRdGraficaTerceirizadaActionPerformed(evt);
+						}
+					});
 				}
 			}
 			pack();
@@ -271,7 +295,304 @@ public class JFrmCadGrafica extends javax.swing.JFrame {
 		btnGroupGraficas.add(jRdGraficaTerceirizada);
 		return btnGroupGraficas;
 	}
-
 	
+	private JLabel getJLblContrato() {
+		if(jLblContrato == null) {
+			jLblContrato = new JLabel();
+			jLblContrato.setText("Contrato:");
+			jLblContrato.setBounds(12, 76, 50, 16);
+		}
+		return jLblContrato;
+	}
+	
+	private JComboBox getJCmbContrato() {
+		if(jCmbContrato == null) {
+			ComboBoxModel jCmbContratoModel = 
+				new DefaultComboBoxModel(
+						new String[] { });
+			jCmbContrato = new JComboBox();
+			jCmbContrato.setModel(jCmbContratoModel);
+			jCmbContrato.setBounds(104, 70, 204, 23);
+			jCmbContrato.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					jCmbContratoActionPerformed(evt);
+				}
+			});
+		}
+		return jCmbContrato;
+	}
+	
+	private void jRdGraficaEmpresaActionPerformed(ActionEvent evt) {
+		habilitarComponentes();
+	}
+	
+	private void jRdGraficaTerceirizadaActionPerformed(ActionEvent evt) {
+		habilitarComponentes();
+	}
+	
+	private void habilitarComponentes(){	
+		jLblCodigoContrato.setVisible(jRdGraficaTerceirizada.isSelected());
+		jLblValorContrato.setVisible(jRdGraficaTerceirizada.isSelected());
+		jLblBairro.setVisible(jRdGraficaTerceirizada.isSelected());
+		jLblCep.setVisible(jRdGraficaTerceirizada.isSelected());
+		jLblCidade.setVisible(jRdGraficaTerceirizada.isSelected());
+		jLblComplemento.setVisible(jRdGraficaTerceirizada.isSelected());
+		jLblContrato.setVisible(jRdGraficaTerceirizada.isSelected());
+		jLblLogradouro.setVisible(jRdGraficaTerceirizada.isSelected());
+		jLblNumero.setVisible(jRdGraficaTerceirizada.isSelected());
+		jLblPais.setVisible(jRdGraficaTerceirizada.isSelected());
+		jLblUf.setVisible(jRdGraficaTerceirizada.isSelected());
+		jCmbContrato.setVisible(jRdGraficaTerceirizada.isSelected());
+		jCmbUf.setVisible(jRdGraficaTerceirizada.isSelected());
+		jTxtBairro.setVisible(jRdGraficaTerceirizada.isSelected());
+		jTxtCep.setVisible(jRdGraficaTerceirizada.isSelected());
+		jTxtCidade.setVisible(jRdGraficaTerceirizada.isSelected());
+		jTxtComplemento.setVisible(jRdGraficaTerceirizada.isSelected());
+		jTxtLogradouro.setVisible(jRdGraficaTerceirizada.isSelected());
+		jTxtNumero.setVisible(jRdGraficaTerceirizada.isSelected());
+		jTxtPais.setVisible(jRdGraficaTerceirizada.isSelected());
+	}
+	
+	private JButton getJBtnInserir() {
+		if(jBtnInserir == null) {
+			jBtnInserir = new JButton();
+			jBtnInserir.setText("Inserir");
+			jBtnInserir.setBounds(12, 201, 60, 21);
+			jBtnInserir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					jBtnInserirActionPerformed(evt);
+				}
+			});
+		}		
+		return jBtnInserir;
+	}
+	
+
+	private JButton getJBtnRemover() {
+		if(jBtnRemover == null) {
+			jBtnRemover = new JButton();
+			jBtnRemover.setText("Remover");
+			jBtnRemover.setBounds(124, 200, 59, 23);
+			jBtnRemover.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					jBtnRemoverActionPerformed(evt);
+				}
+			});
+		}
+			
+		return jBtnRemover;
+	}
+	
+	private JButton getJBtnAlterar() {
+		if(jBtnAlterar == null) {
+			jBtnAlterar = new JButton();
+			jBtnAlterar.setText("Alterar");
+			jBtnAlterar.setBounds(75, 200, 47, 23);		
+			jBtnAlterar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					jBtnAlterarActionPerformed(evt);
+				}
+			});
+		}
+		return jBtnAlterar;
+	}
+	
+	private JButton getJBtnConsultar() {
+		if(jBtnConsultar == null) {
+			jBtnConsultar = new JButton();
+			jBtnConsultar.setText("Consultar");
+			jBtnConsultar.setBounds(188, 200, 75, 23);
+			jBtnConsultar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					jBtnConsultarActionPerformed(evt);
+				}
+			});
+		}
+		return jBtnConsultar;
+	}
+	
+	private JLabel getJLblCodigoContrato() {
+		if(jLblCodigoContrato == null) {
+			jLblCodigoContrato = new JLabel();
+			jLblCodigoContrato.setText("codigo");
+			jLblCodigoContrato.setBounds(314, 73, 69, 16);
+		}
+		return jLblCodigoContrato;
+	}
+	
+	private JLabel getJLblValorContrato() {
+		if(jLblValorContrato == null) {
+			jLblValorContrato = new JLabel();
+			jLblValorContrato.setText("valor");
+			jLblValorContrato.setBounds(383, 73, 100, 16);
+		}
+		return jLblValorContrato;
+	}
+	
+	private void jBtnInserirActionPerformed(ActionEvent evt) {
+		try {
+			this.validacao();
+			Grafica grafica = new Grafica();
+
+			if(jRdGraficaTerceirizada.isSelected()){
+				GraficaTerceirizada gt = new GraficaTerceirizada();
+				Endereco endereco = new Endereco();
+				endereco.setLogradouro(jTxtLogradouro.getText());
+				endereco.setBairro(jTxtBairro.getText());
+				endereco.setCidade(jTxtCidade.getText());
+				endereco.setComplemento(jTxtComplemento.getText());
+				endereco.setNumero(jTxtNumero.getText());
+				endereco.setCep(jTxtCep.getText());
+				endereco.setPais(jTxtPais.getText());
+				endereco.setUf((String)jCmbUf.getSelectedItem());
+				gt.setEndereco(endereco);
+				gt.setContrato((Contrato) jCmbContrato.getSelectedItem());
+				gt.setNome(jTxtNome.getText());
+				grafica = gt;
+			}else{
+				GraficaEmpresa ge = new GraficaEmpresa();
+				ge.setNome(jTxtNome.getText());
+				grafica = ge;
+			}			
+			fachada.inserirGrafica(grafica);
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo Identidade e cep devem conter um valor inteiro.");
+		}
+	}
+	
+	private void validacao() throws ExcecaoNegocio{		
+		if(jTxtNome.getText().trim().equals("")){
+			throw new ExcecaoNegocio("O Nome deve ser informado");
+		}
+		if(jRdGraficaTerceirizada.isSelected()&& jCmbContrato.getSelectedIndex() == -1){
+			throw new ExcecaoNegocio("O Contrato deve ser informado");
+		}
+	}
+	
+	private void jBtnAlterarActionPerformed(ActionEvent evt) {
+		try {
+			this.validacao();
+			int codigo;
+			codigo = Integer.parseInt(JOptionPane.showInputDialog(null,
+					"Informe o código da Gráfica: "
+					));	
+			Grafica grafica = new Grafica();
+
+			if(jRdGraficaTerceirizada.isSelected()){
+				GraficaTerceirizada gt = new GraficaTerceirizada();
+				Endereco endereco = new Endereco();
+				endereco.setLogradouro(jTxtLogradouro.getText());
+				endereco.setBairro(jTxtBairro.getText());
+				endereco.setCidade(jTxtCidade.getText());
+				endereco.setComplemento(jTxtComplemento.getText());
+				endereco.setNumero(jTxtNumero.getText());
+				endereco.setCep(jTxtCep.getText());
+				endereco.setPais(jTxtPais.getText());
+				endereco.setUf((String)jCmbUf.getSelectedItem());
+				gt.setEndereco(endereco);
+				gt.setContrato((Contrato) jCmbContrato.getSelectedItem());
+				gt.setNome(jTxtNome.getText());
+				gt.setCodigo(codigo);
+				grafica = gt;
+			}else{
+				GraficaEmpresa ge = new GraficaEmpresa();
+				ge.setNome(jTxtNome.getText());
+				ge.setCodigo(codigo);
+				grafica = ge;
+			}			
+			fachada.alterarGrafica(grafica);
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo código deve conter um valor inteiro.");
+		}
+	}
+	
+	private void jBtnRemoverActionPerformed(ActionEvent evt) {
+		try {
+			int codigo;
+			codigo = Integer.parseInt(JOptionPane.showInputDialog(null,
+					"Informe o código da Gráfica: "
+					));					
+			fachada.removerGrafica(codigo);
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo Código deve conter um valor inteiro.");
+		}
+	}
+	
+	private void jBtnConsultarActionPerformed(ActionEvent evt) {
+		try {			
+			int codigo;
+			codigo = Integer.parseInt(JOptionPane.showInputDialog(null,
+					"Informe o código da Gráfica: "
+					));	
+			Grafica grafica = fachada.consultarGrafica(codigo);
+
+			if(grafica instanceof GraficaTerceirizada){
+				GraficaTerceirizada gt = (GraficaTerceirizada) grafica;
+				jRdGraficaTerceirizada.setSelected(true);
+				this.habilitarComponentes();
+				jTxtNome.setText(gt.getNome());
+				jCmbContrato.setSelectedItem(gt.getContrato());
+				this.mostrarContrato();
+				jTxtBairro.setText(gt.getEndereco().getBairro());
+				jTxtCep.setText(gt.getEndereco().getCep());
+				jTxtCidade.setText(gt.getEndereco().getCidade());
+				jTxtComplemento.setText(gt.getEndereco().getComplemento());			
+				jTxtLogradouro.setText(gt.getEndereco().getLogradouro());
+				jTxtNome.setText(gt.getNome());
+				jTxtNumero.setText(gt.getEndereco().getNumero());
+				jTxtPais.setText(gt.getEndereco().getPais());	
+				jCmbUf.setSelectedItem(gt.getEndereco().getUf());
+				
+				gt.setContrato((Contrato) jCmbContrato.getSelectedItem());
+				gt.setNome(jTxtNome.getText());
+				gt.setCodigo(codigo);
+				grafica = gt;
+			}
+			if(grafica instanceof GraficaEmpresa){
+				GraficaEmpresa g2 = (GraficaEmpresa) grafica;
+				jRdGraficaEmpresa.setSelected(true);
+				this.habilitarComponentes();
+				jTxtNome.setText(g2.getNome());
+			}						
+		} catch (ExcecaoNegocio e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());	
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "O Campo Código deve conter um valor inteiro.");
+		}
+	}
+	
+	private void carregarContratos(){
+		try {
+			ArrayList<Contrato> contratos =  fachada.consultarContrato();
+			
+			for (int i = 0; i < contratos.size(); i++) {
+				jCmbContrato.addItem(contratos.get(i));
+			}
+		} catch (ExcecaoNegocio e) {
+
+		}
+	}
+	
+	private void mostrarContrato(){
+		if(jCmbContrato.getSelectedIndex()!=-1){
+			Contrato contrato = (Contrato)jCmbContrato.getSelectedItem();
+			jLblCodigoContrato.setText(contrato.getCodigo()+"");
+			jLblValorContrato.setText(contrato.getValor()+"");		
+		}else{
+			jLblCodigoContrato.setText("");
+			jLblValorContrato.setText("");
+		}
+	}
+	
+	private void jCmbContratoActionPerformed(ActionEvent evt) {
+		mostrarContrato();
+	}
 
 }

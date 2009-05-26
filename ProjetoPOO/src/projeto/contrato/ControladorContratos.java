@@ -34,6 +34,11 @@ public class ControladorContratos {
 		return contratos;
 	}
 	
+	public ArrayList<Contrato> consultar()throws ExcecaoNegocio {
+		ArrayList<Contrato> contratos = repContratos.consultar();
+		return contratos;
+	}
+	
 	public void remover(int codigo)throws ExcecaoNegocio{
 		this.consultar(codigo);
 		this.repContratos.remover(codigo);

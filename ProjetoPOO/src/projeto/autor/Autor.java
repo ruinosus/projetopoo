@@ -43,8 +43,8 @@ public class Autor {
 	public boolean equals(Object o){
 		boolean resultado = false;
 		if (o instanceof Autor){
-			Autor e = (Autor)o;
-			if(e.identidade== this.getIdentidade()){
+			Autor a = (Autor)o;
+			if(a.getIdentidade()== this.getIdentidade()){
 				resultado = true;
 			}
 		}

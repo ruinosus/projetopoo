@@ -81,15 +81,15 @@ public class RepositorioGraficasEmpresas implements IRepositorioGraficasEmpresas
 
 	
 	@SuppressWarnings("finally")
-	public GraficaEmpresa inserir(GraficaEmpresa graficaEmpresa) throws ExcecaoNegocio {
+	public int inserir(GraficaEmpresa graficaEmpresa) throws ExcecaoNegocio {
 		Connection conexao = UtilBD.obterConexao();
-		GraficaEmpresa resultado = null;
+		int resultado = 0;
 		try {			
 			PreparedStatement comando = conexao.prepareStatement(QUERY_INSERT); 
 			comando.setString(1, graficaEmpresa.getNome());
 			comando.executeUpdate();
 			System.out.println("Inserção com Sucesso!");
-			resultado = this.consultar(this.obterUltimoCodigo());
+			resultado = this.obterUltimoCodigo();
 		} catch (SQLException e1) {
 			throw new ExcecaoNegocio(e1.getMessage());
 		}finally{

@@ -10,4 +10,5 @@ public interface IRepositorioContratos {
 	public void remover(int codigo)throws ExcecaoNegocio;
 	public Contrato consultar(int codigo)throws ExcecaoNegocio;
 	public ArrayList<Contrato> consultar(String nome) throws ExcecaoNegocio;
+	public ArrayList<Contrato> consultar() throws ExcecaoNegocio;
 }
