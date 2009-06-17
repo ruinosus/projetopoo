@@ -1,11 +1,15 @@
 package projeto.loteLivro;
 
+import java.util.ArrayList;
+
+import projeto.autor.Autor;
 import projeto.autor.IRepositorioAutores;
 
 
 import projeto.contrato.IRepositorioContratos;
 import projeto.editora.IRepositorioEditoras;
 
+import projeto.endereco.Endereco;
 import projeto.endereco.IRepositorioEnderecos;
 import projeto.excecao.ExcecaoNegocio;
 import projeto.grafica.ControladorGraficas;
@@ -70,6 +74,18 @@ public class ControladorLotesLivros {
 		loteLivro.setLivro(livro);
 		
 		return loteLivro;
+	}
+	
+	public ArrayList<LoteLivro> consultar() throws ExcecaoNegocio {
+		ArrayList<LoteLivro> lotesLivro = repLotesLivro.consultar();
+		
+		for(int i = 0; i< lotesLivro.size(); i++){
+			LoteLivro loteLivro = lotesLivro.get(i);		
+			lotesLivro.set(i, this.montarLoteLivro(loteLivro)); 
+
+		}
+	
+		return lotesLivro;
 	}
 	
 

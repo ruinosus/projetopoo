@@ -58,4 +58,10 @@ public class LoteLivro {
 		super();
 	}
 	
+	public String toString(){
+		return this.livro+" Numero de Copias: "+this.numeroCopias+" data entrega: "+ this.dataEntrega + " Grafica: " + this.grafica;
+	}
+	
+	
+	
 }

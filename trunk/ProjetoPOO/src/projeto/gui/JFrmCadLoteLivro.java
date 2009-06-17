@@ -60,6 +60,7 @@ public class JFrmCadLoteLivro extends javax.swing.JFrame {
 	private JLabel jLblGrafica;
 	private JButton jBtnRemover;
 	private JButton jBtnAlterar;
+	private JButton jBtnRelatorio;
 	private JComboBox jCmbGraficas;
 	private JComboBox jCmbLivros;
 	private JButton jBtnInserir;
@@ -203,6 +204,17 @@ public class JFrmCadLoteLivro extends javax.swing.JFrame {
 				jCmbGraficas.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						jCmbGraficasActionPerformed(evt);
+					}
+				});
+			}
+			{
+				jBtnRelatorio = new JButton();
+				getContentPane().add(jBtnRelatorio);
+				jBtnRelatorio.setText("Ver Relatorio");
+				jBtnRelatorio.setBounds(294, 152, 79, 21);
+				jBtnRelatorio.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnRelatorioActionPerformed(evt);
 					}
 				});
 			}
@@ -350,5 +362,9 @@ public class JFrmCadLoteLivro extends javax.swing.JFrame {
 		mostrarGrafica();
 	}
 	
-	
+	private void jBtnRelatorioActionPerformed(ActionEvent evt) {
+		JFrmRelLoteLivro frmRelLoteLivro = new JFrmRelLoteLivro();
+		frmRelLoteLivro.setVisible(true);
+	}
+
 }

@@ -229,5 +229,8 @@ public class Fachada {
       public LoteLivro consultarLoteLivro(int codigo)throws ExcecaoNegocio{
      	 return this.controladorLotesLivros.consultar(codigo);
       }
+      public ArrayList<LoteLivro> consultarLoteLivro()throws ExcecaoNegocio{
+      	 return this.controladorLotesLivros.consultar();
+       }
 	  
 }
