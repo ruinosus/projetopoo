@@ -45,15 +45,20 @@ public class ControladorLotesLivros {
 	public LoteLivro consultar(int codigo) throws ExcecaoNegocio {
 		
 		LoteLivro loteLivro = this.repLotesLivro.consultar(codigo);		
+		if(loteLivro==null)
+			throw new ExcecaoNegocio("Lote não encontrado no sistema.");
+		
 		
 		return this.montarLoteLivro(loteLivro) ;
 	}
 	
 	public void remover(int codigo)throws ExcecaoNegocio{
+		this.consultar(codigo);
 		this.repLotesLivro.remover(codigo);	
 	}
 	
 	public void alterar(LoteLivro loteLivro) throws ExcecaoNegocio {
+		this.consultar(loteLivro.getCodigo());
 		this.repLotesLivro.alterar(loteLivro);
 	}
 	
