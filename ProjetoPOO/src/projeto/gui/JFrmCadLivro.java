@@ -50,6 +50,7 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 	private JLabel jLblTitulo;
 	private JTextField jTxtTitulo;
 	private JButton jBtnAlterar;
+	private JButton jBtnRelatorio;
 	private JTextField jTxtIsnb;
 	private JLabel jLblIsnb;
 	private JComboBox jCmbAutorLivro;
@@ -245,6 +246,18 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 				getContentPane().add(jTxtIsnb);
 				jTxtIsnb.setBounds(138, 4, 219, 23);
 			}
+			{
+				jBtnRelatorio = new JButton();
+				getContentPane().add(jBtnRelatorio);
+				jBtnRelatorio.setText("Ver Relatorio");
+				jBtnRelatorio.setBounds(352, 195, 79, 21);
+				jBtnRelatorio.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnRelatorioActionPerformed(evt);
+					}
+				});
+
+			}
 			pack();
 			this.setSize(458, 271);
 		} catch (Exception e) {
@@ -415,5 +428,10 @@ public class JFrmCadLivro extends javax.swing.JFrame {
 		if(jCmbEditora.getSelectedIndex() == -1){
 			throw new ExcecaoNegocio("A editora deve ser informada");
 		}
+	}
+	
+	private void jBtnRelatorioActionPerformed(ActionEvent evt) {
+		JFrmRelLivro frmRelLivro = new JFrmRelLivro();
+		frmRelLivro.setVisible(true);
 	}
 }

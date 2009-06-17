@@ -1,15 +1,24 @@
 package projeto.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
+import javax.swing.BorderFactory;
+
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 
 import javax.swing.WindowConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.SoftBevelBorder;
 import javax.swing.SwingUtilities;
 
 import projeto.Fachada;
@@ -53,6 +62,7 @@ public class JFrmCadAutor extends javax.swing.JFrame {
 	private JTextField jTxtLogradouro;
 	private JButton jBtnRemover;
 	private JButton jBtnAlterar;
+	private JButton jBtnRelatorio;
 	private JButton jBtnConsultar;
 	private JButton jBtnInserir;
 	private JTextField jTxtPais;
@@ -83,7 +93,6 @@ public class JFrmCadAutor extends javax.swing.JFrame {
 	public JFrmCadAutor() {
 		super();
 		initGUI();
-		
 	}
 	
 	private void initGUI() {
@@ -279,6 +288,17 @@ public class JFrmCadAutor extends javax.swing.JFrame {
 					}
 				});
 			}
+			{
+				jBtnRelatorio = new JButton();
+				getContentPane().add(jBtnRelatorio);
+				jBtnRelatorio.setText("Ver Relatorio");
+				jBtnRelatorio.setBounds(404, 240, 79, 21);
+				jBtnRelatorio.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnRelatorioActionPerformed(evt);
+					}
+				});
+			}
 			pack();
 			this.setSize(517, 356);
 		} catch (Exception e) {
@@ -342,7 +362,7 @@ public class JFrmCadAutor extends javax.swing.JFrame {
 			}
 			int identidade = (Integer.parseInt(jTxtIdentidade.getText()));
 
-			fachada.removerAutor(identidade);			
+			fachada.removerAutor(identidade);		
 			
 		} catch (ExcecaoNegocio e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -381,6 +401,11 @@ public class JFrmCadAutor extends javax.swing.JFrame {
 		if(jTxtNome.getText().trim().equals("")){
 			throw new ExcecaoNegocio("O Nome deve ser informado");
 		}
+	}
+	
+	private void jBtnRelatorioActionPerformed(ActionEvent evt) {
+		JFrmRelAutor frmRelAutor = new JFrmRelAutor();
+		frmRelAutor.setVisible(true);
 	}
 
 }

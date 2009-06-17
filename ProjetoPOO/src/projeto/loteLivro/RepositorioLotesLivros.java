@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import projeto.excecao.ExcecaoNegocio;
 import projeto.grafica.Grafica;
 import projeto.livro.Livro;
@@ -17,6 +19,7 @@ public class RepositorioLotesLivros implements IRepositorioLotesLivros {
 	private static final String QUERY_SELECT_CODIGO = "SELECT COD_IMPRESSAO,COD_GRAFICA,COD_LIVRO,NUMERO_COPIAS,DATA_ENTREGA FROM IMPRESSAO WHERE COD_IMPRESSAO = ?";
 	//private static final String QUERY_MAXIMO_CODIGO = "SELECT MAX(COD_CONTRATO) MAXCOD FROM CONTRATO";
 	private static final String QUERY_DELETE = "DELETE FROM IMPRESSAO WHERE COD_IMPRESSAO = ?";
+	private static final String QUERY_SELECT_ALL = "SELECT COD_IMPRESSAO,COD_GRAFICA,COD_LIVRO,NUMERO_COPIAS,DATA_ENTREGA FROM IMPRESSAO" ;
 	
 	
 	public void alterar(LoteLivro loteLivro) throws ExcecaoNegocio {
@@ -110,6 +113,25 @@ public class RepositorioLotesLivros implements IRepositorioLotesLivros {
 		grafica.setCodigo(codGrafica);		
 		
 		return new LoteLivro(codLoteLivro,livro,grafica,d,numeroCopias);
+	}
+
+
+	@SuppressWarnings("finally")
+	public ArrayList<LoteLivro> consultar() throws ExcecaoNegocio {
+		ArrayList<LoteLivro>  loteLivros = new ArrayList<LoteLivro> ();
+		Connection conexao = UtilBD.obterConexao();
+		try {			
+			PreparedStatement comando = conexao.prepareStatement(QUERY_SELECT_ALL);
+			ResultSet rs = comando.executeQuery();
+			while(rs.next()){
+				loteLivros.add(this.criarLoteLivro(rs));
+			}
+		}catch (SQLException e){
+			throw new ExcecaoNegocio(e.getMessage());
+		} finally{
+			UtilBD.fecharConexao(conexao);
+			return loteLivros;
+		}
 	}
 
 }

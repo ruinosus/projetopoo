@@ -47,6 +47,7 @@ public class JFrmCadContrato extends javax.swing.JFrame {
 	private JLabel jLblNomeResponsavel;
 	private JButton jBtnRemover;
 	private JButton jBtnAlterar;
+	private JButton jBtnRelatorio;
 	private JButton jBtnInserir;
 	private JButton jBtnConsultar;
 	private JTextField jTxtValor;
@@ -144,6 +145,18 @@ public class JFrmCadContrato extends javax.swing.JFrame {
 					}
 				});
 			}
+			{
+				jBtnRelatorio = new JButton();
+				getContentPane().add(jBtnRelatorio);
+				jBtnRelatorio.setText("Ver Relatorio");
+				jBtnRelatorio.setBounds(310, 95, 79, 21);
+				jBtnRelatorio.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnRelatorioActionPerformed(evt);
+					}
+				});
+
+			}
 			pack();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -220,6 +233,11 @@ public class JFrmCadContrato extends javax.swing.JFrame {
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "O Campo o código deve conter um valor inteiro");
 		}
+	}
+	
+	private void jBtnRelatorioActionPerformed(ActionEvent evt) {
+		JFrmRelContrato frmRelContrato = new JFrmRelContrato();
+		frmRelContrato.setVisible(true);
 	}
 
 }

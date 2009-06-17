@@ -43,6 +43,7 @@ public class JFrmCadEditora extends javax.swing.JFrame {
 	}
 
 	private JButton jBtnAlterar;
+	private JButton jBtnRelatorio;
 	private JLabel jLblLogradouro;
 	private JTextField jTxtLogradouro;
 	private JLabel jLblBairro;
@@ -268,6 +269,18 @@ public class JFrmCadEditora extends javax.swing.JFrame {
 				jLblLogradouro.setText("Logradouro:");
 				jLblLogradouro.setBounds(12, 75, 65, 16);
 			}
+			{
+				jBtnRelatorio = new JButton();
+				getContentPane().add(jBtnRelatorio);
+				jBtnRelatorio.setText("Ver Relatorio");
+				jBtnRelatorio.setBounds(401, 175, 79, 21);
+				jBtnRelatorio.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						jBtnRelatorioActionPerformed(evt);
+					}
+				});
+
+			}
 			pack();
 			this.setSize(521, 250);
 		} catch (Exception e) {
@@ -367,5 +380,10 @@ public class JFrmCadEditora extends javax.swing.JFrame {
 		if(jTxtNome.getText().trim().equals("")){
 			throw new ExcecaoNegocio("O Nome deve ser informado");
 		}
+	}
+	
+	private void jBtnRelatorioActionPerformed(ActionEvent evt) {
+		JFrmRelEditora frmRelEditora = new JFrmRelEditora();
+		frmRelEditora.setVisible(true);
 	}
 }

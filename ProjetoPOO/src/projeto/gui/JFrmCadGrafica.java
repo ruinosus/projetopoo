@@ -63,6 +63,7 @@ public class JFrmCadGrafica extends javax.swing.JFrame {
 	private JTextField jTxtLogradouro;
 	private JButton jBtnRemover;
 	private JButton jBtnAlterar;
+	private JButton jBtnRelatorio;
 	private JLabel jLblValorContrato;
 	private JLabel jLblCodigoContrato;
 	private JButton jBtnConsultar;
@@ -256,6 +257,7 @@ public class JFrmCadGrafica extends javax.swing.JFrame {
 				getContentPane().add(getJBtnConsultar());
 				getContentPane().add(getJLblCodigoContrato());
 				getContentPane().add(getJLblValorContrato());
+				getContentPane().add(getJBtnRelatorio());
 				jPanel1.setBounds(314, 12, 169, 51);
 				jPanel1.setBorder(BorderFactory.createTitledBorder("Tipos de Gráfica"));
 				{
@@ -593,6 +595,25 @@ public class JFrmCadGrafica extends javax.swing.JFrame {
 	
 	private void jCmbContratoActionPerformed(ActionEvent evt) {
 		mostrarContrato();
+	}
+	
+	private JButton getJBtnRelatorio() {
+		if(jBtnRelatorio == null) {
+			jBtnRelatorio = new JButton();
+			jBtnRelatorio.setText("Ver Relatorio");
+			jBtnRelatorio.setBounds(404, 201, 79, 21);
+			jBtnRelatorio.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					jBtnRelatorioActionPerformed(evt);
+				}
+			});
+		}
+		return jBtnRelatorio;
+	}
+	
+	private void jBtnRelatorioActionPerformed(ActionEvent evt) {
+		JFrmRelGrafica frmRelGrafica = new JFrmRelGrafica();
+		frmRelGrafica.setVisible(true);
 	}
 
 }
